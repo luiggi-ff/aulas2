@@ -1,0 +1,32 @@
+<%= link_to "Volver", resources_path %> |
+<%= link_to "Crear reserva", new_booking_path %>
+<%if @bookings.present? %>
+  <p>Lista de reservas</p>
+  <table width="100%">
+    <tr>
+      <td>start</td>
+      <td>finish</td>
+      <td>status </td>
+      <td>user </td> 
+   </tr>
+    <%@bookings.each do |b|%>
+    <tr>
+      <td><%=b[:start]%></td>
+      <td><%=b[:finish]%></td>
+      <td><%=b[:status]%></td>
+      <td><%=b[:user]%></td>
+      <td>
+        <% if b[:status]=='approved' %> 
+        <%= link_to "Cancelar", booking_path(b[:id]), :method => :delete %>
+        <% else %>
+        <%= link_to "Aprobar", booking_path(b[:id]), :method => :put  %>
+        <%= link_to "Rechazar", booking_path(b[:id]), :method => :delete  %>
+        <% end %>
+      </td>
+    </tr>
+    </tr>
+    <%end%>
+  </table>
+<%else%>
+  <p>No Bookings Found</p>
+<%end%>
