@@ -1,0 +1,15 @@
+<%if @resource.present? %>
+  <p>Aulas</p>
+  <table width="100%">
+    <tr>
+      <td>Name</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><%=@resource[:name]%></td>
+      <td><%=@resource[:description]%></td>
+    </tr>
+  </table>
+<%else%>
+  <p>No Resources Found</p>
+<%end%>

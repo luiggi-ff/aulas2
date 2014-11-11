@@ -1,0 +1,5 @@
+<%= form_tag resources_path, :method => :post do %>
+   name : <%=text_field_tag :name%><br />
+   description :<%=text_field_tag :description%><br />
+   <%=submit_tag "save"%>
+<%end%>

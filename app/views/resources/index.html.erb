@@ -1,0 +1,24 @@
+<%= link_to "Crear aula nueva", new_resource_path %>
+<%if @resources.present? %>
+  <p>Lista de aulas</p>
+  <table width="100%">
+    <tr>
+      <td>Nombre</td>
+      <td>Descripcion</td>
+      <td>Acciones </td> 
+   </tr>
+    <%@resources.each do |r|%>
+    <tr>
+      <td><%= link_to r[:name], resource_path(r[:id]) %> </td>
+      <td><%=r[:description]%></td>
+      <td>
+        <%= link_to "Editar", edit_resource_path(r[:id]) %> | 
+        <%= link_to "Borrar", resource_path(r[:id]), :method => :delete %> |
+        <%= link_to "Reservas", "link to bookings" %>
+      </td>
+    </tr>
+    <%end%>
+  </table>
+<%else%>
+  <p>No Resources Found</p>
+<%end%>
