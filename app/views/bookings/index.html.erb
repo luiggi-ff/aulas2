@@ -1,5 +1,5 @@
 <%= link_to "Volver", resources_path %> |
-<%= link_to "Crear reserva", new_booking_path %>
+<%= link_to "Crear reserva", new_booking_path(:r_id => params[:r_id])%>
 <%if @bookings.present? %>
   <p>Lista de reservas</p>
   <table width="100%">

@@ -1,0 +1,7 @@
+<%= form_tag bookings_path(:r_id => params[:r_id]), :method => :post do %>
+   start : <%=text_field_tag :from%><br />
+   finish :<%=text_field_tag :to%><br />
+   user :<%=text_field_tag :user%><br />
+   
+   <%=submit_tag "save"%>
+<%end%>
