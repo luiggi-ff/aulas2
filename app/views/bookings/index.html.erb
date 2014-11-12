@@ -1,5 +1,5 @@
 <%= link_to "Volver", resources_path %> |
-<%= link_to "Crear reserva", new_booking_path(:r_id => params[:r_id])%>
+<%= link_to "Crear reserva", new_resource_booking_path(:resource_id => params[:resource_id])%>
 <%if @bookings.present? %>
   <p>Lista de reservas</p>
   <table width="100%">
@@ -17,10 +17,10 @@
       <td><%=b[:user]%></td>
       <td>
         <% if b[:status]=='approved' %> 
-        <%= link_to "Cancelar", booking_path(b[:id]), :method => :delete %>
+        <%= link_to "Cancelar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete %>
         <% else %>
-        <%= link_to "Aprobar", booking_path(b[:id]), :method => :put  %>
-        <%= link_to "Rechazar", booking_path(b[:id]), :method => :delete  %>
+        <%= link_to "Aprobar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :put  %>
+        <%= link_to "Rechazar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete  %>
         <% end %>
       </td>
     </tr>

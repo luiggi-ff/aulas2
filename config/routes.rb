@@ -55,8 +55,9 @@ Rails.application.routes.draw do
   #   end
 
 #ApiConsumer::Application.routes.draw do
-resources :resources
-resources :bookings
+resources :resources do
+  resources :bookings
+end
 
 #get 'resources/:id' => 'resources#view'
  

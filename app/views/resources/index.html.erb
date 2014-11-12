@@ -14,7 +14,7 @@
       <td>
         <%= link_to "Editar", edit_resource_path(r[:id]) %> | 
         <%= link_to "Borrar", resource_path(r[:id]), :method => :delete %> |
-        <%= link_to "Reservas", bookings_path(:r_id => r[:id])  %>
+        <%= link_to "Reservas", resource_bookings_path(r[:id])  %>
       </td>
     </tr>
     <%end%>

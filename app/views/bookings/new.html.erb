@@ -1,4 +1,4 @@
-<%= form_tag bookings_path(:r_id => params[:r_id]), :method => :post do %>
+<%= form_tag resource_bookings_path(:resource_id => params[:resource_id]), :method => :post do %>
    start : <%=text_field_tag :from%><br />
    finish :<%=text_field_tag :to%><br />
    user :<%=text_field_tag :user%><br />
