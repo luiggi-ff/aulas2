@@ -28,6 +28,7 @@ class BookingsController < ApplicationController
     payload = params#.to_json # converting the params to json
     rest_resource = RestClient::Resource.new(uri)
     begin
+      p payload
       rest_resource.post payload , :content_type => 'text/plain'
       flash[:notice] = "Booking Saved successfully"
       redirect_to resource_bookings_path(:resource_id => params[:resource_id]) # take back to index page, which now list the newly created user also

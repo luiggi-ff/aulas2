@@ -4,15 +4,15 @@
   <p>Lista de reservas</p>
   <table width="100%">
     <tr>
-      <td>start</td>
-      <td>finish</td>
-      <td>status </td>
-      <td>user </td> 
+      <td>Inicio</td>
+      <td>Fin</td>
+      <td>Estado </td>
+      <td>Usuario </td> 
    </tr>
     <%@bookings.each do |b|%>
     <tr>
-      <td><%=b[:start]%></td>
-      <td><%=b[:finish]%></td>
+      <td><%=Time.parse(b[:start]).strftime('%F %R')%></td>
+      <td><%=Time.parse(b[:finish]).strftime('%F %R')%></td>
       <td><%=b[:status]%></td>
       <td><%=b[:user]%></td>
       <td>

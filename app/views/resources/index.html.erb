@@ -5,16 +5,15 @@
     <tr>
       <td>Nombre</td>
       <td>Descripcion</td>
-      <td>Acciones </td> 
+      <td>Ver </td> 
    </tr>
     <%@resources.each do |r|%>
     <tr>
       <td><%= link_to r[:name], resource_path(r[:id]) %> </td>
       <td><%=r[:description]%></td>
       <td>
-        <%= link_to "Editar", edit_resource_path(r[:id]) %> | 
-        <%= link_to "Borrar", resource_path(r[:id]), :method => :delete %> |
-        <%= link_to "Reservas", resource_bookings_path(r[:id])  %>
+        <%= link_to "Reservas", resource_bookings_path(r[:id])  %> |
+        <%= link_to "Disponibles", resource_availabilities_path(r[:id])  %>
       </td>
     </tr>
     <%end%>

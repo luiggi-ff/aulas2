@@ -1,13 +1,19 @@
+<%= link_to "Volver", resources_path %> 
+<% p params %>
 <%if @resource.present? %>
   <p>Aulas</p>
   <table width="100%">
     <tr>
-      <td>Name</td>
-      <td>Description</td>
+      <td>Nombre</td>
+      <td>Descripcion</td>
     </tr>
     <tr>
       <td><%=@resource[:name]%></td>
       <td><%=@resource[:description]%></td>
+      <td>
+        <%= link_to "Editar", edit_resource_path, :id => params[:id] %> | 
+        <%= link_to "Borrar", resource_path, :id => params[:id], :method => :delete %> 
+      </td>
     </tr>
   </table>
 <%else%>
