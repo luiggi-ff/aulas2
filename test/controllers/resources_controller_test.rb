@@ -7,13 +7,16 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:resources)
   end
 
- # test "should create resource" do
- #   assert_difference('Resource.count') do
- #     post :create, resource: {name: 'res1', description: 'res1'}
- #   end
- #
- #   assert_redirected_to article_path(assigns(:resource))
- # end
+#  test "should create resource" do
+#    post(:create, {name: 'res1', description: 'res1'})
+#    assert_redirected_to resources_path
+#  end
+
+  test "should not create resource" do
+    post :create
+    assert_response :success
+  end
+
 
   test "should show resource 1" do
     get(:show, {'id' => "1"})
