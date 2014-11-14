@@ -39,4 +39,5 @@ gem 'rest-client'
 # Use debugger
 # gem 'debugger', group: [:development, :tcer'
 gem 'therubyracer'
-
+gem 'foundation-rails'
+gem 'rails_layout'

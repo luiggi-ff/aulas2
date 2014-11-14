@@ -55,6 +55,8 @@ Rails.application.routes.draw do
   #   end
 
 #ApiConsumer::Application.routes.draw do
+root to: 'resources#index'
+
 resources :resources do
   resources :bookings
   resources :availabilities
