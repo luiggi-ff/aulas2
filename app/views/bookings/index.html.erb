@@ -13,14 +13,17 @@
     <tr>
       <td><%=Time.parse(b[:start]).strftime('%F %R')%></td>
       <td><%=Time.parse(b[:finish]).strftime('%F %R')%></td>
-      <td><%=b[:status]%></td>
+      <td><%=b[:status]||='free'%></td>
       <td><%=b[:user]%></td>
       <td>
-        <% if b[:status]=='approved' %> 
-        <%= link_to "Cancelar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete %>
-        <% else %>
-        <%= link_to "Aprobar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :put  %>
-        <%= link_to "Rechazar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete  %>
+        <% case b[:status] %>
+        <% when 'approved' %> 
+           <%= link_to "Cancelar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete %>
+        <% when 'pending' %>  
+           <%= link_to "Aprobar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :put  %> |
+           <%= link_to "Rechazar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete  %>
+        <% when 'free' %>     
+           <%= link_to "Reservar", new_resource_booking_path(:resource_id => params[:resource_id], :start => b[:start], :finish => b[:finish]) %>
         <% end %>
       </td>
     </tr>

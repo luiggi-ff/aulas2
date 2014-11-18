@@ -6,17 +6,38 @@ class BookingsController < ApplicationController
 
   def index
  #   p params
-    uri = "#{API_BASE_URL}/resources/#{params[:resource_id]}/bookings?status=all" # specifying json format in the URl
-    rest_resource = RestClient::Resource.new(uri) # It will create
+    uri_bookings = "#{API_BASE_URL}/resources/#{params[:resource_id]}/bookings?status=all" # specifying json format in the URl
+    rest_resource_bookings = RestClient::Resource.new(uri_bookings) # It will create
     #new rest-client resource so that we can call different methods of it
-    bookings = rest_resource.get # will get back you all the detail in json format, but it
+    bookings = rest_resource_bookings.get # will get back you all the detail in json format, but it
     #will we wraped as string, so we will parse it in the next step.
     @bookings = JSON.parse(bookings, :symbolize_names => true)[:bookings] # we will convert the return
+    
+    uri_avail = "#{API_BASE_URL}/resources/#{params[:resource_id]}/availability" # specifying json format in the URl
+    rest_resource_avail = RestClient::Resource.new(uri_avail) # It will create
+    #new rest-client resource so that we can call different methods of it
+    availability = rest_resource_avail.get # will get back you all the detail in json format, but it
+    #will we wraped as string, so we will parse it in the next step.
+    @availability = JSON.parse(availability, :symbolize_names => true)[:availability] # we will convert the return
+    
     @bookings.each do |b|
       url = b[:links].first[:uri]
       id = URI(url).path.split('/').last
       b[:id] = id
     end
+    #p @bookings
+
+    @availability.each do |a|
+      url = a[:links].first[:uri]
+      id = URI(url).path.split('/').last
+      a[:id] = id
+    end
+    #p @availability
+
+
+    @all_slots=@bookings.concat( @availability ) 
+    @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
+    
   end
 
   def new 
