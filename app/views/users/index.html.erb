@@ -1,0 +1,20 @@
+<%= link_to "Volver", resources_path %> |
+<%if @users.present? %>
+  <p>Usuarios</p>
+  <table width="100%">
+    <tr>
+      <td>id</td>
+      <td>Nombre</td>
+      <td>email</td>
+   </tr>
+    <%@users.each do |e|%>
+    <tr>
+      <td><%=e[:id]%></td>
+      <td><%=e[:full_name]%></td>
+      <td><%=e[:email]%></td>
+    </tr>
+    <%end%>
+  </table>
+<%else%>
+  <p>No Bookings Found</p>
+<%end%>

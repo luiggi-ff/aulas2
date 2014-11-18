@@ -56,10 +56,12 @@ Rails.application.routes.draw do
 
 #ApiConsumer::Application.routes.draw do
 root to: 'resources#index'
+devise_for :users
 
+resources :users
 resources :resources do
   resources :bookings
-  resources :availabilities
+ # resources :availabilities
 end
 
 #get 'resources/:id' => 'resources#view'
