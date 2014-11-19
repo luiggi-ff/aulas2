@@ -1,5 +1,7 @@
 <%= link_to "Volver", resources_path %> |
+  <% if current_user.admin? %>
 <%= link_to "Crear reserva", new_resource_booking_path(:resource_id => params[:resource_id])%>
+<% end %> 
 <%if @bookings.present? %>
   <p>Lista de reservas</p>
   <table width="100%">
@@ -18,10 +20,15 @@
       <td>
         <% case b[:status] %>
         <% when 'approved' %> 
-           <%= link_to "Cancelar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete %>
+           <% if current_user.admin? %>
+             <%= link_to "Cancelar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete %>
+           <% end %>
         <% when 'pending' %>  
-           <%= link_to "Aprobar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :put  %> |
-           <%= link_to "Rechazar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete  %>
+           <% if current_user.admin? %>
+             <%= link_to "Aprobar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :put  %> |
+             <%= link_to "Rechazar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete  %>
+           <% end %> 
+
         <% when 'free' %>     
            <%= link_to "Reservar", new_resource_booking_path(:resource_id => params[:resource_id], :start => b[:start], :finish => b[:finish]) %>
         <% end %>

@@ -1,4 +1,6 @@
-<%= link_to "Crear aula nueva", new_resource_path %>
+<% if current_user.admin? %>
+  <%= link_to "Crear aula nueva", new_resource_path %>
+<%end%>
 <%if @resources.present? %>
   <p>Lista de aulas</p>
   <table width="100%">

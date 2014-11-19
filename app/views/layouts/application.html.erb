@@ -11,11 +11,10 @@
   <body>
     <header>
       <%= render 'layouts/navigation' %>
-        <%= render 'devise/menu/registration_items' %>
-  <%= render 'devise/menu/login_items' %>
     </header>
     <main role="main">
       <%= render 'layouts/messages' %>
+
       <%= yield %>
     </main>
   </body>

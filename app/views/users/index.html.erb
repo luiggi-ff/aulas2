@@ -6,12 +6,14 @@
       <td>id</td>
       <td>Nombre</td>
       <td>email</td>
+      <td>Admin?</td>
    </tr>
     <%@users.each do |e|%>
     <tr>
       <td><%=e[:id]%></td>
       <td><%=e[:full_name]%></td>
       <td><%=e[:email]%></td>
+      <td><%=e[:admin]%></td>
     </tr>
     <%end%>
   </table>
