@@ -24,6 +24,8 @@ class BookingsController < ApplicationController
       url = b[:links].first[:uri]
       id = URI(url).path.split('/').last
       b[:id] = id
+      user = User.find_by_id(b[:user])
+      b[:user_name] = user[:full_name]
     end
     #p @bookings
 
