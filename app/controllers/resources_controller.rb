@@ -17,7 +17,7 @@ class ResourcesController < ApplicationController
       id = URI(url).path.split('/').last
       r[:id] = id
     end
-
+    I18n.locale = :es
     #data into array of hash.see json data parsing here
   end
 

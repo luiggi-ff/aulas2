@@ -58,7 +58,9 @@ Rails.application.routes.draw do
 root to: 'resources#index'
 devise_for :users
 
-resources :users
+scope "/admin" do
+  resources :users
+end
 resources :resources do
   resources :bookings
  # resources :availabilities
