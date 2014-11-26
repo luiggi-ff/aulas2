@@ -2,7 +2,7 @@ class ResourcesController < ApplicationController
   before_action :authenticate_user!
   require 'rest_client'
 
-  API_BASE_URL = "http://localhost:9292/" # base url of the API
+  API_BASE_URL = "http://orient-vega.codio.io:9292/" # base url of the API
   
 
   def index
