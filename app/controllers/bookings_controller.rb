@@ -35,7 +35,7 @@ class BookingsController < ApplicationController
       a[:id] = id
     end
     #p @availability
-
+@resource_name = params[:resource_name]
 
     @all_slots=@bookings.concat( @availability ) 
     @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
@@ -54,8 +54,8 @@ class BookingsController < ApplicationController
       p payload
       rest_resource.post payload , :content_type => 'text/plain'
       flash[:notice] = "Booking Saved successfully"
-      UserMailer.booking_created(current_user).deliver
-      redirect_to resource_bookings_path(:resource_id => params[:resource_id]) # take back to index page, which now list the newly created user also
+      UserMailer.booking_created(current_user, params).deliver
+        redirect_to resource_bookings_path(:resource_id => params[:resource_id], :resource_name => params[:resource_name]) # take back to index page, which now list the newly created user also
     rescue Exception => e
      flash[:error] = "Booking Failed to save"
      render :new

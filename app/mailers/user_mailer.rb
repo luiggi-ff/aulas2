@@ -1,8 +1,9 @@
 class UserMailer < ActionMailer::Base
   default from: "from@example.com"
 
-  def booking_created(user)
+  def booking_created(user,params)
     @user = user
+    @params = params
     mail(to: @user[:email], subject: 'Reserva creada')
   end
 

@@ -4,5 +4,6 @@
    finish :<%=text_field_tag :to, params[:finish].nil? ? "" : Time.parse(params[:finish]).strftime('%F %R')%><br />
    user name :<%=text_field_tag :user_name, params[:user_name]%><br />
    <%= hidden_field_tag :user, params[:user_id]%>
+<%= hidden_field_tag :resource_name, params[:resource_name]%>
    <%=submit_tag "save"%>
 <%end%>

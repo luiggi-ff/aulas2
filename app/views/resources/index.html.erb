@@ -14,7 +14,7 @@
       <td><%= current_user.admin? ? (link_to r[:name], resource_path(r[:id])) : r[:name] %> </td>
       <td><%=r[:description]%></td>
       <td>
-        <%= link_to "Reservas", resource_bookings_path(r[:id])  %> 
+          <%= link_to "Reservas", resource_bookings_path(r[:id], :resource_name => r[:name])  %> 
       </td>
     </tr>
     <%end%>
