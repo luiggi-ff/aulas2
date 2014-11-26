@@ -54,6 +54,7 @@ class BookingsController < ApplicationController
       p payload
       rest_resource.post payload , :content_type => 'text/plain'
       flash[:notice] = "Booking Saved successfully"
+      UserMailer.booking_created(current_user).deliver
       redirect_to resource_bookings_path(:resource_id => params[:resource_id]) # take back to index page, which now list the newly created user also
     rescue Exception => e
      flash[:error] = "Booking Failed to save"
@@ -72,6 +73,7 @@ class BookingsController < ApplicationController
     rest_resource = RestClient::Resource.new(uri)
     begin
       rest_resource.put payload , :content_type => 'text/plain'
+      UserMailer.booking_approved(current_user).deliver
       flash[:notice] = "Booking Updated successfully"
     rescue Exception => e
       flash[:error] = "Booking Failed to Update"
@@ -84,7 +86,9 @@ class BookingsController < ApplicationController
     rest_resource = RestClient::Resource.new(uri)
     begin
      rest_resource.delete
+     
      flash[:notice] = "Resource Deleted successfully"
+     UserMailer.booking_rejected(current_user).deliver
     rescue Exception => e
      flash[:error] = "Resource Failed to Delete"
     end
