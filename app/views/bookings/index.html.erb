@@ -1,9 +1,7 @@
-<%= link_to "Volver", resources_path %> 
-<% if current_user.admin? %>
-  | <%= link_to "Crear reserva", new_resource_booking_path(:resource_id => params[:resource_id])%>
-<% end %> 
-<%if @bookings.present? %>
-  <p>Lista de reservas para el recurso: <%= @resource_name %></p>
+<%= link_to "Volver", resources_path %> | 
+<%= link_to "Crear reserva", new_resource_booking_path(@resource[:id])%>
+<%if @all_slots.present? %>
+<p>Lista de reservas para el recurso: <%= @resource[:name] %></p>
   <table width="100%">
     <tr>
       <td>Inicio</td>
@@ -11,7 +9,7 @@
       <td>Estado </td>
       <td>Usuario </td> 
    </tr>
-    <%@bookings.each do |b|%>
+    <%@all_slots.each do |b|%>
     <tr>
       <td><%=Time.parse(b[:start]).strftime('%F %R')%></td>
       <td><%=Time.parse(b[:finish]).strftime('%F %R')%></td>
@@ -21,18 +19,18 @@
         <% case b[:status] %>
         <% when 'approved' %> 
            <% if (current_user.admin? or current_user.id == b[:user].to_i) %>
-             <%= link_to "Cancelar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete %>
+             <%= link_to "Cancelar", resource_booking_path(:id => b[:id], :resource => @resource), :method => :delete %>
            <% end %>
         <% when 'pending' %>  
            <% if current_user.admin? %>
-             <%= link_to "Aprobar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :put  %> |
+             <%= link_to "Aprobar", resource_booking_path(:id => b[:id], :resource => @resource), :method => :put  %> |
            <% end %>
           <% if (current_user.admin? || current_user[:id] == b[:user].to_i) %>
-               <%= link_to "Rechazar", resource_booking_path(:id => b[:id], :resource_id => params[:resource_id]), :method => :delete  %>
+          <%= link_to "Rechazar", resource_booking_path(:resource=>@resource, :id => b[:id]), :method => :delete  %>
            <% end %> 
 
         <% when 'free' %>     
-           <%= link_to "Reservar", new_resource_booking_path(:resource_id => params[:resource_id], :start => b[:start], :finish => b[:finish], :user_name => current_user[:full_name], :user_id => current_user[:id], :resource_name => @resource_name) %>
+           <%= link_to "Reservar", new_resource_booking_path(:start => b[:start], :finish => b[:finish], :user_name => current_user[:full_name], :user_id => current_user[:id],:resource => @resource) %>
         <% end %>
       </td>
     </tr>

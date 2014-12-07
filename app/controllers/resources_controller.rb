@@ -1,24 +1,15 @@
 class ResourcesController < ApplicationController
   before_action :authenticate_user!
   require 'rest_client'
-
-  API_BASE_URL = "http://orient-vega.codio.io:9292/" # base url of the API
+  #require 'asset-manager'
+  
+  API_BASE_URL = "http://orient-vega.codio.io:9292/" 
   
 
   def index
-    uri = "#{API_BASE_URL}/resources" # specifying json format in the URl
-    rest_resource = RestClient::Resource.new(uri) # It will create
-    #new rest-client resource so that we can call different methods of it
-    resources = rest_resource.get # will get back you all the detail in json format, but it
-    #will we wraped as string, so we will parse it in the next step.
-    @resources = JSON.parse(resources, :symbolize_names => true)[:resources] # we will convert the return
-    @resources.each do |r|
-      url = r[:links].first[:uri]
-      id = URI(url).path.split('/').last
-      r[:id] = id
-    end
+    resources = RestClient::Resource.new("#{API_BASE_URL}/resources").get 
+    @resources = JSON.parse(resources, :symbolize_names => true)[:resources]
     I18n.locale = :es
-    #data into array of hash.see json data parsing here
   end
 
   def new
