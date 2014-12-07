@@ -11,10 +11,10 @@
    </tr>
     <%@resources.each do |r|%>
     <tr>
-      <td><%= current_user.admin? ? (link_to r[:name], resource_path(r[:id])) : r[:name] %> </td>
-      <td><%=r[:description]%></td>
+      <td><%= current_user.admin? ? (link_to r.name, resource_path(r.id)) : r.name %> </td>
+      <td><%=r.description%></td>
       <td>
-          <%= link_to "Reservas", resource_bookings_path(:resource_id =>r[:id], :resource =>r)  %> 
+          <%= link_to "Reservas", resource_bookings_path(:resource_id =>r.id)  %> 
       </td>
     </tr>
     <%end%>

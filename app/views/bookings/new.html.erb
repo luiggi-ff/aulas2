@@ -1,11 +1,11 @@
-<%= form_tag resource_bookings_path(:resource_id => params[:resource][:id], :resource => params[:resource]), :method => :post do %>
+<%= form_tag resource_bookings_path(:resource_id => params[:resource_id], :resource => params[:resource]), :method => :post do %>
 <% p params %>
    start : <%=text_field_tag :from, params[:start].nil? ? "" : Time.parse(params[:start]).strftime('%F %R')%><br />
    finish :<%=text_field_tag :to, params[:finish].nil? ? "" : Time.parse(params[:finish]).strftime('%F %R')%><br />
-   user name :<%=text_field_tag :user_name, params[:user_name]%><br />
+user name :<%=text_field_tag :user_name, User.find(params[:user_id]).full_name%><br />
    <%= hidden_field_tag :user, params[:user_id]%>
-<%= hidden_field_tag :resource, params[:resource]%>
-<%= hidden_field_tag :resource_id, params[:resource][:id]%>
+
+<%= hidden_field_tag :resource_id, params[:resource]%>
 
    <%=submit_tag "save"%>
 <%end%>
