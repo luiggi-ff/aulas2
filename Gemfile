@@ -43,3 +43,5 @@ gem 'foundation-rails'
 gem 'rails_layout'
 gem 'devise'
 gem 'her'
+gem 'omniauth-facebook'
+gem "omniauth-google-oauth2"
