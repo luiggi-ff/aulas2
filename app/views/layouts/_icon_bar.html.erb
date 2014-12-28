@@ -1,0 +1,16 @@
+<div class="icon-bar four-up">         
+  <a class="item" href="/"> <i class="fi-home"></i> <label>Home</label> </a> 
+
+  <% if user_signed_in? %>
+     <% if current_user.admin? %>
+       <%= link_to '<i class="fi-torsos"></i> <label>Usuarios</label> </a>'.html_safe, users_path, :class=>"item" %>
+     <% end %>
+     <%= link_to('<i class="fi-widget"></i> <label>Mi cuenta</label> </a>'.html_safe, edit_user_registration_path, :class => "item") %>
+     <%= link_to '<i class="fi-arrow-right"></i><label>Salir</label>'.html_safe, destroy_user_session_path,  :method => :delete, :class => "item" %>
+  <% else %>
+     <%= link_to('<i class="fi-checkbox"></i> <label>Registrarse</label> </a>'.html_safe, new_user_registration_path,:class => "item") %>
+     <%= link_to '<i class="fi-key"></i> <label>Ingresar</label> </a>'.html_safe, new_user_session_path, :class => "item" %> 
+  <% end %>
+
+ 
+ </div>

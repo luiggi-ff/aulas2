@@ -12,5 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require foundation
 //= require turbolinks
 //= require_tree .
+//= require foundation-datetimepicker
+$(function(){ $(document).foundation(); 
+$('#from').datetimepicker({format: 'Y-m-d H:i'})
+$('#to').datetimepicker({forma: 'Y-m-d H:i'})  
+});

@@ -12,13 +12,8 @@
   </head>
 
   <body>
-    <header>
-      <%= render 'layouts/icon_bar' %>
-    </header>
-    <main role="main">  
-      <%= render 'layouts/messages' %>
-      <%= yield %>
-      <%= javascript_include_tag "application" %>
-      </main>
+
+    <%= yield %>
+    <%= javascript_include_tag "application" %>
   </body>
 </html>

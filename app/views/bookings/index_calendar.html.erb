@@ -1,0 +1,58 @@
+<%= link_to "Volver", resources_path %> | 
+
+<div class="row">
+      <div class="small-3 small-centered columns">
+        <div >
+          <%= link_to "", resource_bookings_path(:resource_id => @resource.id, date: @date.prev_month.strftime("%Y-%m-01"), view: "calendar"), :class=>"fi-arrow-left" %>
+          <%= "#{@date.strftime("%B")} #{@date.year}" %>
+          <%= link_to "", resource_bookings_path(:resource_id => @resource.id, date: @date.next_month.strftime("%Y-%m-01"), view: "calendar"), :class=>"fi-arrow-right" %>          
+        </div>
+      </div>
+    </div>
+    <div class="center">
+      <div class="small-6 small-centered columns">
+        <%= calendar @date do |date| %>
+        <%= date.day %>
+        <ul>
+          <% @all_slots.each do |b| %>
+          <% if Time.parse(b.start).to_date <= date &&  Time.parse(b.finish) > date.to_datetime %>
+          <li>
+            <% if b.is_a?(Booking) %>
+              <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="<%= "Owner: #{b.owner.full_name} <br />Status: #{b.status}<br />Start: #{Time.parse(b.start).strftime('%F %R')}<br />Finish: #{Time.parse(b.finish).strftime('%F %R')}" %>"> 
+                <%=b.id == '' ? " ": b.id%>
+              </span>
+            <% end %>
+            <% case b.status %>
+              <% when 'approved' %> 
+                <% if (current_user.admin? or current_user.id == b.user.to_i) %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Rechazar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :delete, :class=>"fi-trash"   %>
+                  </span>
+                <% end %>
+              <% when 'pending' %>  
+                <% if current_user.admin? %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Aprobar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :put, :class=>"fi-check"  %> 
+                  </span>
+                <% end %>
+                <% if (current_user.admin? || current_user.id == b.user.to_i) %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Rechazar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :delete, :class=>"fi-trash"  %>
+                  </span>
+                <% end %> 
+
+              <% when 'free' %>
+                <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Nueva reserva"> 
+                  <%= link_to "", new_resource_booking_path(:start => date.to_datetime, :finish => date.to_datetime + 1.day, :user_id =>current_user.id, :view =>"panel1"),  :class=>"fi-pencil" %>
+                </span>
+              <% end %>        
+            <% end %>
+          </li>    
+          <% end %>
+        </ul>
+        <% end %>
+      </div>
+    </div>
+      
+
+

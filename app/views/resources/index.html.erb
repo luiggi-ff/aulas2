@@ -5,16 +5,17 @@
   <p>Lista de aulas</p>
   <table width="100%">
     <tr>
-      <td><%= t('name') %></td>
-      <td>Descripcion</td>
-      <td>Ver </td> 
+      <th><%= t('name') %></th>
+      <th>Descripcion</th>
+      <th>Ver Reservas</th> 
    </tr>
     <%@resources.each do |r|%>
     <tr>
       <td><%= current_user.admin? ? (link_to r.name, resource_path(r.id)) : r.name %> </td>
       <td><%=r.description%></td>
       <td>
-          <%= link_to "Reservas", resource_bookings_path(:resource_id =>r.id)  %> 
+          <%= link_to '<i class="fi-list"></i>'.html_safe, resource_bookings_path(:resource_id =>r.id, :status => "all") %> |
+          <%= link_to '<i class="fi-calendar"></i>'.html_safe, resource_bookings_path(:resource_id =>r.id, :view=>"calendar") %>  
       </td>
     </tr>
     <%end%>

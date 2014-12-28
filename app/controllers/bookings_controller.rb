@@ -5,15 +5,37 @@ class BookingsController < ApplicationController
   
 
   def index
-    @resource=Resource.find(params[:resource_id])
-    bookings = Booking.for_resource(@resource.id).where(status: 'all')
-    availability = Availability.for_resource(@resource.id).all
+    @date = params[:date] ? Date.parse(params[:date]) : Date.tomorrow
+    if @date < Date.tomorrow
+        @date = Date.tomorrow
+    end
+    
+    @resource=Resource.find(params[:resource_id]) 
+    
+    bookings = Booking.for_resource(@resource.id).where(status: 'all').where(date: @date)
+    @bookings = bookings
+    availability = Availability.for_resource(@resource.id).where(date: @date)
     @all_slots=bookings.concat( availability ) 
     @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
+      if params[:view]=="calendar"
+          render 'index_calendar'
+      else 
+          bookings = Booking.for_resource(@resource.id).where(status: params[:status]).where(date: @date)
+          @bookings = bookings
+          if params[:status]=='all'
+             availability = Availability.for_resource(@resource.id).where(date: @date)
+             @all_slots=bookings.concat( availability ) 
+             @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
+          else
+              @all_slots=@bookings
+          end
+          render 'index_list'
+      end
+  
   end
 
   def new 
-
+     render 'bookings/new', layout: false
   end
 
   def create
@@ -24,10 +46,14 @@ class BookingsController < ApplicationController
     @booking.user = params[:user]
     
     begin
-      @booking.save
-      flash[:notice] = "Booking Saved successfully"
+      if @booking.save
+        flash[:notice] = "Booking Saved successfully"
         UserMailer.booking_created(@booking, @resource).deliver
-        redirect_to resource_bookings_path
+        redirect_to resource_bookings_path(view: params[:view],status: params[:status])
+      else 
+          flash[:error] = "Booking Failed to save"
+          redirect_to resource_bookings_path(view: params[:view],status: params[:status])
+      end
     rescue Exception => e
      flash[:error] = "Booking Failed to save"
      render :new
@@ -48,7 +74,7 @@ class BookingsController < ApplicationController
     rescue Exception => e
       flash[:error] = "Booking Failed to Update"
     end
-      redirect_to resource_bookings_path
+      redirect_to resource_bookings_path(view: params[:view],status: params[:status])
   end
 
   def destroy
@@ -71,7 +97,7 @@ class BookingsController < ApplicationController
             flash[:error] = "Booking Failed to Cancel"
         end            
     end
-      redirect_to resource_bookings_path
+      redirect_to resource_bookings_path(view: params[:view],status: params[:status])
   end
 
 end

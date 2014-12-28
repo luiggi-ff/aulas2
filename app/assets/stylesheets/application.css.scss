@@ -12,7 +12,11 @@
  *
  *= require_tree .
  *= require_self
+ //= require foundation_and_overrides
+
  */
+@import 'foundation-icons';
+@import "foundation/components/tabs";
 ul.hmenu {
   list-style: none; 
   margin: 0 0 2em;
@@ -22,3 +26,4 @@ ul.hmenu {
 ul.hmenu li {
   display: inline;  
 }
+

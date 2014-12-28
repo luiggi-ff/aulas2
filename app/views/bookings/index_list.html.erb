@@ -1,0 +1,58 @@
+<%= link_to "Volver", resources_path %> | 
+<%= link_to "Crear reserva", new_resource_booking_path(@resource.id)%>
+    <p>Lista de reservas para: <%= @resource.name %></p>
+
+<dl class="sub-nav"> 
+    <dt>Filter:</dt> 
+    <dd class =<%= current_page?(status: 'all') ? 'active' : '' %>><%= link_to "All", resource_bookings_path(status:"all")%></dd> 
+    <dd class =<%= current_page?(status: 'pending') ? 'active' : '' %>><%= link_to "Pending", resource_bookings_path(status:"pending")%></dd> 
+    <dd class =<%= current_page?(status: 'approved') ? 'active' : '' %>><%= link_to "Approved", resource_bookings_path(status:"approved")%></dd> 
+</dl>
+
+    <table width="100%">
+      <tr>
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Estado </th>
+        <th>Usuario </th> 
+      </tr>
+      <%@all_slots.each do |b|%>
+        <tr>
+          <td>
+              <%=Time.parse(b.start).strftime('%F %R')%>
+         </td>
+          <td>
+              <%=Time.parse(b.finish).strftime('%F %R')%>
+          </td>
+          <td>
+              <%=b.status||='free'%>
+          </td>
+          <td>
+              <%=b.owner == '' ? " ": User.find(b.owner).full_name%>
+          </td>
+          <td>
+            <% case b.status %>
+              <% when 'approved' %> 
+                <% if (current_user.admin? or current_user.id == b.user.to_i) %>
+                  <%= link_to "Cancelar", resource_booking_path(:id => b.id,:status => 'all'), :method => :delete %>
+                <% end %>
+              <% when 'pending' %>  
+                <% if current_user.admin? %>
+                  <%= link_to "Aprobar", resource_booking_path(:id => b.id,:status => 'all'), :method => :put  %> |
+                <% end %>
+                <% if (current_user.admin? || current_user.id == b.user.to_i) %>
+                  <%= link_to "Rechazar", resource_booking_path(:id => b.id, :status => 'all'), :method => :delete  %>
+                <% end %> 
+              <% when 'free' %>     
+                <%= link_to "Reservar", new_resource_booking_path(:start => b.start, :finish => b.finish, :user_id =>current_user.id,:status => 'all'), "data-reveal-id"=>"myModal", "data-reveal-ajax"=>"true" %>
+              <% end %>
+          </td>
+        </tr>
+      <%end%>
+  </table>
+
+
+<div id="myModal" class="small reveal-modal" data-reveal>
+
+</div>
+

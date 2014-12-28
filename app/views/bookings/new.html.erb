@@ -1,11 +1,53 @@
-<%= form_tag resource_bookings_path(:resource_id => params[:resource_id], :resource => params[:resource]), :method => :post do %>
-<% p params %>
-   start : <%=text_field_tag :from, params[:start].nil? ? "" : Time.parse(params[:start]).strftime('%F %R')%><br />
-   finish :<%=text_field_tag :to, params[:finish].nil? ? "" : Time.parse(params[:finish]).strftime('%F %R')%><br />
-user name :<%=text_field_tag :user_name, User.find(params[:user_id]).full_name%><br />
-   <%= hidden_field_tag :user, params[:user_id]%>
+  <div class="row">
+  
+    <div class="large-12 large-centered columns">
+<%= form_tag resource_bookings_path(:resource_id => params[:resource_id], 
+                                    :resource => params[:resource], 
+                                    view: params[:view], 
+                                    status: params[:status]), 
+    :method => :post do %>
 
-<%= hidden_field_tag :resource_id, params[:resource]%>
+          <fieldset>
+    <legend>Crear reserva</legend>
+   <div class="row">
+       
+       <div class="large-2 columns">
+           <%=label_tag 'from', "Desde:", class: "left inline" %>
+       </div>
+       <div class="large-8 columns">
+           <%=text_field_tag :from, start=params[:start].nil? ? "" : Time.parse(params[:start]).strftime('%F %R'), :onclick=>"$('#from').datetimepicker({format: 'Y-m-d H:i', value:#{start}});"%><br />
+       </div>
+   </div>
+   <div class="row">
+       <div class="large-2 columns">
+           <%=label_tag 'to', "Hasta:", class: "left inline" %>
+       </div>
+       <div class="large-8 columns">
+           <%=text_field_tag :to, finish=params[:finish].nil? ? "" : Time.parse(params[:finish]).strftime('%F %R'), :onclick=>"$('#to').datetimepicker({format: 'Y-m-d H:i', value:#{finish}});"%><br />
+       </div>
+   </div>        
+   <div class="row">
+       <div class="large-2 columns">
+           <%=label_tag 'user_name', "Usuario:", class: "left inline" %>
+       </div>
+       <div class="large-8 columns">
+           <%=text_field_tag :user_name, current_user.full_name%><br />
+           <%= hidden_field_tag :user, current_user.id%>
+       </div>
+   </div>
+   <div class="row">
+       <div class="large-4 columns"> 
+                  <%= hidden_field_tag :resource_id, params[:resource]%>
 
-   <%=submit_tag "save"%>
+       </div>
+       <div class="large-2  columns">
+       <%= link_to 'Cancelar', resource_bookings_path(view: params[:view], status: params[:status]), class: 'small button secondary radius' %>
+       </div>
+       <div class="large-5  columns">
+            <%=submit_tag "Guardar", class:"small button radius"%>
+       </div>
+   </div>
+   </fieldset>
 <%end%>
+</div>
+</div>

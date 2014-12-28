@@ -1,41 +1,121 @@
 <%= link_to "Volver", resources_path %> | 
-<%= link_to "Crear reserva", new_resource_booking_path(@resource.id)%>
-<%if @all_slots.present? %>
-<p>Lista de reservas para el recurso: <%= @resource.name %></p>
-  <table width="100%">
-    <tr>
-      <td>Inicio</td>
-      <td>Fin</td>
-      <td>Estado </td>
-      <td>Usuario </td> 
-   </tr>
-    <%@all_slots.each do |b|%>
-    <tr>
-      <td><%=Time.parse(b.start).strftime('%F %R')%></td>
-      <td><%=Time.parse(b.finish).strftime('%F %R')%></td>
-      <td><%=b.status||='free'%></td>
-        <td><%=b.owner == '' ? " ": User.find(b.owner).full_name%></td>
-      <td>
-        <% case b.status %>
-        <% when 'approved' %> 
-           <% if (current_user.admin? or current_user.id == b.user.to_i) %>
-             <%= link_to "Cancelar", resource_booking_path(:id => b.id), :method => :delete %>
-           <% end %>
-        <% when 'pending' %>  
-           <% if current_user.admin? %>
-             <%= link_to "Aprobar", resource_booking_path(:id => b.id), :method => :put  %> |
-           <% end %>
-          <% if (current_user.admin? || current_user.id == b.user.to_i) %>
-          <%= link_to "Rechazar", resource_booking_path(:id => b.id), :method => :delete  %>
-           <% end %> 
+<dl class="tabs" data-tab data-options="deep_linking: true">
+  <dd class="active"><a href="#panel2">List</a></dd>
+  <dd><a href="#panel1">Calendar</a></dd>
+</dl>
 
-        <% when 'free' %>     
-           <%= link_to "Reservar", new_resource_booking_path(:start => b.start, :finish => b.finish, :user_id =>current_user.id) %>
+<div class="tabs-content">
+  <div class="content"  id="panel1">
+ 
+    
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <div class="well controls">
+          <%= link_to "-", resource_bookings_path(:resource_id => @resource.id, date: @date.prev_month.strftime("%Y-%m-01"), anchor: "panel1") %>
+          <%= "#{@date.strftime("%B")} #{@date.year}" %>
+          <%= link_to "+", resource_bookings_path(:resource_id => @resource.id, date: @date.next_month.strftime("%Y-%m-01"), anchor: "panel1") %>
+            
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <%= calendar @date do |date| %>
+        <%= date.day %>
+        <ul>
+          <% @all_slots.each do |b| %>
+          <% if Time.parse(b.start).to_date <= date &&  Time.parse(b.finish) > date.to_datetime %>
+          <li>
+            <% if b.is_a?(Booking) %>
+              <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="<%= "Owner: #{b.owner.full_name} <br />Status: #{b.status}<br />Start: #{Time.parse(b.start).strftime('%F %R')}<br />Finish: #{Time.parse(b.finish).strftime('%F %R')}" %>"> 
+                <%=b.id == '' ? " ": b.id%>
+              </span>
+            <% end %>
+            <% case b.status %>
+              <% when 'approved' %> 
+                <% if (current_user.admin? or current_user.id == b.user.to_i) %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Rechazar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :delete, :class=>"fi-trash"   %>
+                  </span>
+                <% end %>
+              <% when 'pending' %>  
+                <% if current_user.admin? %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Aprobar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :put, :class=>"fi-check"  %> 
+                  </span>
+                <% end %>
+                <% if (current_user.admin? || current_user.id == b.user.to_i) %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Rechazar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :delete, :class=>"fi-trash"  %>
+                  </span>
+                <% end %> 
+
+              <% when 'free' %>
+                <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Nueva reserva"> 
+                  <%= link_to "", new_resource_booking_path(:start => date.to_datetime, :finish => date.to_datetime + 1.day, :user_id =>current_user.id, :view =>"panel1"),  :class=>"fi-pencil" %>
+                </span>
+              <% end %>        
+            <% end %>
+          </li>    
+          <% end %>
+        </ul>
         <% end %>
-      </td>
-    </tr>
-    <%end%>
+      </div>
+    </div>
+      
+  </div>
+  <div class="content active" id="panel2">   
+
+
+ 
+  <%if @all_slots.present? %>
+    <%= link_to "Crear reserva", new_resource_booking_path(@resource.id)%>
+    <p>Lista de reservas para el recurso: <%= @resource.name %></p>
+    <table width="100%">
+      <tr>
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Estado </th>
+        <th>Usuario </th> 
+      </tr>
+      <%@all_slots.each do |b|%>
+        <tr>
+          <td>
+              <%=Time.parse(b.start).strftime('%F %R')%>
+         </td>
+          <td>
+              <%=Time.parse(b.finish).strftime('%F %R')%>
+          </td>
+          <td>
+              <%=b.status||='free'%>
+          </td>
+          <td>
+              <%=b.owner == '' ? " ": User.find(b.owner).full_name%>
+          </td>
+          <td>
+            <% case b.status %>
+              <% when 'approved' %> 
+                <% if (current_user.admin? or current_user.id == b.user.to_i) %>
+                  <%= link_to "Cancelar", resource_booking_path(:id => b.id), :method => :delete %>
+                <% end %>
+              <% when 'pending' %>  
+                <% if current_user.admin? %>
+                  <%= link_to "Aprobar", resource_booking_path(:id => b.id), :method => :put  %> |
+                <% end %>
+                <% if (current_user.admin? || current_user.id == b.user.to_i) %>
+                  <%= link_to "Rechazar", resource_booking_path(:id => b.id), :method => :delete  %>
+                <% end %> 
+              <% when 'free' %>     
+                <%= link_to "Reservar", new_resource_booking_path(:start => b.start, :finish => b.finish, :user_id =>current_user.id) %>
+              <% end %>
+          </td>
+        </tr>
+      <%end%>
   </table>
-<%else%>
-  <p>No Bookings Found</p>
-<%end%>
+
+  <%else%>
+    <p>No Bookings Found</p>
+  <%end%>
+  </div>
+</div>
+
