@@ -26,24 +26,24 @@
               <% when 'approved' %> 
                 <% if (current_user.admin? or current_user.id == b.user.to_i) %>
                   <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Rechazar reserva"> 
-                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :delete, :class=>"fi-trash"   %>
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "calendar"), :method => :delete, :class=>"fi-trash"   %>
                   </span>
                 <% end %>
               <% when 'pending' %>  
                 <% if current_user.admin? %>
                   <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Aprobar reserva"> 
-                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :put, :class=>"fi-check"  %> 
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "calendar"), :method => :put, :class=>"fi-check"  %> 
                   </span>
                 <% end %>
                 <% if (current_user.admin? || current_user.id == b.user.to_i) %>
                   <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Rechazar reserva"> 
-                    <%= link_to "", resource_booking_path(:id => b.id, view: "panel1"), :method => :delete, :class=>"fi-trash"  %>
+                    <%= link_to "", resource_booking_path(:id => b.id, view: "calendar"), :method => :delete, :class=>"fi-trash"  %>
                   </span>
                 <% end %> 
 
               <% when 'free' %>
                 <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Nueva reserva"> 
-                  <%= link_to "", new_resource_booking_path(:start => date.to_datetime, :finish => date.to_datetime + 1.day, :user_id =>current_user.id, :view =>"panel1"),  :class=>"fi-pencil" %>
+                  <%= link_to "", new_resource_booking_path(:start => date.to_datetime, :finish => date.to_datetime + 1.day, :user_id =>current_user.id, :view =>"calendar"),  :class=>"fi-pencil" %>
                 </span>
               <% end %>        
             <% end %>

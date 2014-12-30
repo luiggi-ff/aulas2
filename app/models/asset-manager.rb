@@ -14,6 +14,9 @@ class Booking
   collection_path "/resources/:resource_id/bookings"
   scope :for_resource, -> (id){where(_resource_id: id) }    
 
+    
+  custom_get :own
+    
   def owner
     @owner ||= User.find(self.user.to_i)
   end

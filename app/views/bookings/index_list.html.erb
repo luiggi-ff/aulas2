@@ -4,9 +4,9 @@
 
 <dl class="sub-nav"> 
     <dt>Filter:</dt> 
-    <dd class =<%= current_page?(status: 'all') ? 'active' : '' %>><%= link_to "All", resource_bookings_path(status:"all")%></dd> 
-    <dd class =<%= current_page?(status: 'pending') ? 'active' : '' %>><%= link_to "Pending", resource_bookings_path(status:"pending")%></dd> 
-    <dd class =<%= current_page?(status: 'approved') ? 'active' : '' %>><%= link_to "Approved", resource_bookings_path(status:"approved")%></dd> 
+    <dd class =<%= @status == 'all' ? 'active' : '' %>><%= link_to "All", resource_bookings_path(status:"all")%></dd> 
+    <dd class =<%= @status == 'pending' ? 'active' : '' %>><%= link_to "Pending", resource_bookings_path(status:"pending")%></dd> 
+    <dd class =<%= @status == 'approved' ? 'active' : '' %>><%= link_to "Approved", resource_bookings_path(status:"approved")%></dd> 
 </dl>
 
     <table width="100%">
@@ -34,17 +34,25 @@
             <% case b.status %>
               <% when 'approved' %> 
                 <% if (current_user.admin? or current_user.id == b.user.to_i) %>
-                  <%= link_to "Cancelar", resource_booking_path(:id => b.id,:status => 'all'), :method => :delete %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip" title="Cancelar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id), :method => :delete, :class=>"fi-trash"   %>
+                  </span>
                 <% end %>
               <% when 'pending' %>  
                 <% if current_user.admin? %>
-                  <%= link_to "Aprobar", resource_booking_path(:id => b.id,:status => 'all'), :method => :put  %> |
+                   <span data-tooltip aria-haspopup="true" class="has-tip" title="Aprobar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id), :method => :put, :class=>"fi-check"  %> 
+                  </span>
                 <% end %>
                 <% if (current_user.admin? || current_user.id == b.user.to_i) %>
-                  <%= link_to "Rechazar", resource_booking_path(:id => b.id, :status => 'all'), :method => :delete  %>
+                  <span data-tooltip aria-haspopup="true" class="has-tip" title="Rechazar reserva"> 
+                    <%= link_to "", resource_booking_path(:id => b.id), :method => :delete, :class=>"fi-trash"  %>
+                  </span>
                 <% end %> 
               <% when 'free' %>     
-                <%= link_to "Reservar", new_resource_booking_path(:start => b.start, :finish => b.finish, :user_id =>current_user.id,:status => 'all'), "data-reveal-id"=>"myModal", "data-reveal-ajax"=>"true" %>
+               <span data-tooltip aria-haspopup="true" class="has-tip" title="Nueva reserva"> 
+                  <%= link_to "", new_resource_booking_path(:start => b.start, :finish => b.finish, :user_id =>current_user.id),  :class=>"fi-pencil" , "data-reveal-id"=>"myModal", "data-reveal-ajax"=>"true" %>
+                </span>
               <% end %>
           </td>
         </tr>

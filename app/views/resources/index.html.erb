@@ -14,8 +14,12 @@
       <td><%= current_user.admin? ? (link_to r.name, resource_path(r.id)) : r.name %> </td>
       <td><%=r.description%></td>
       <td>
-          <%= link_to '<i class="fi-list"></i>'.html_safe, resource_bookings_path(:resource_id =>r.id, :status => "all") %> |
+          <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Ver lista"> 
+          <%= link_to '<i class="fi-list"></i>'.html_safe, resource_bookings_path(:resource_id =>r.id, :status => "all") %> 
+          </span>
+          <span data-tooltip aria-haspopup="true" class="has-tip tip-right" title="Ver calendario"> 
           <%= link_to '<i class="fi-calendar"></i>'.html_safe, resource_bookings_path(:resource_id =>r.id, :view=>"calendar") %>  
+          </span>
       </td>
     </tr>
     <%end%>

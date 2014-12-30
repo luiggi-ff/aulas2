@@ -9,29 +9,41 @@ class BookingsController < ApplicationController
     if @date < Date.tomorrow
         @date = Date.tomorrow
     end
+      
+    params[:status]||= 'all'
+
+    if params[:view]=="calendar"
+       status = 'all'
+    else 
+       status = params[:status]
+    end
+    @status = params[:status]
+
+      
+    if params[:resource_id].nil? || params[:view]=='own_bookings'
+        
+        @own_bookings = Booking.get("/bookings", user: current_user.id, status: @status)
+        render 'index_own'  
+    else 
+      
+       @resource = Resource.find(params[:resource_id]) 
+       bookings = Booking.for_resource(@resource.id).where(status: status).where(date: @date)
+
+       if params[:view]!='calendar' && params[:status]!='all'
+          @all_slots=bookings
+       else
+          availability = Availability.for_resource(@resource.id).where(date: @date)
+          @all_slots = bookings + availability
+          @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
+       end
     
-    @resource=Resource.find(params[:resource_id]) 
-    
-    bookings = Booking.for_resource(@resource.id).where(status: 'all').where(date: @date)
-    @bookings = bookings
-    availability = Availability.for_resource(@resource.id).where(date: @date)
-    @all_slots=bookings.concat( availability ) 
-    @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
-      if params[:view]=="calendar"
+
+       if params[:view]=="calendar"
           render 'index_calendar'
-      else 
-          bookings = Booking.for_resource(@resource.id).where(status: params[:status]).where(date: @date)
-          @bookings = bookings
-          if params[:status]=='all'
-             availability = Availability.for_resource(@resource.id).where(date: @date)
-             @all_slots=bookings.concat( availability ) 
-             @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
-          else
-              @all_slots=@bookings
-          end
+       else 
           render 'index_list'
-      end
-  
+       end
+    end
   end
 
   def new 
