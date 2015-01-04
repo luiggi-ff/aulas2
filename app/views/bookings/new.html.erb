@@ -15,7 +15,7 @@
            <%=label_tag 'from', "Desde:", class: "left inline" %>
        </div>
        <div class="large-8 columns">
-           <%=text_field_tag :from, start=params[:start].nil? ? "" : Time.parse(params[:start]).strftime('%F %R'), :onclick=>"$('#from').datetimepicker({format: 'Y-m-d H:i', value:#{start}});"%><br />
+           <%=text_field_tag :from, start=params[:start].nil? ? "" : Time.parse(params[:start]).strftime('%F %R'), :onclick=>"$('#from').datetimepicker({format: 'Y-m-d H:i', value:'#{start}'});"%><br />
        </div>
    </div>
    <div class="row">
@@ -23,7 +23,7 @@
            <%=label_tag 'to', "Hasta:", class: "left inline" %>
        </div>
        <div class="large-8 columns">
-           <%=text_field_tag :to, finish=params[:finish].nil? ? "" : Time.parse(params[:finish]).strftime('%F %R'), :onclick=>"$('#to').datetimepicker({format: 'Y-m-d H:i', value:#{finish}});"%><br />
+           <%=text_field_tag :to, finish=params[:finish].nil? ? "" : Time.parse(params[:finish]).strftime('%F %R'), :onclick=>"$('#to').datetimepicker({format: 'Y-m-d H:i', value:'#{finish}'});"%><br />
        </div>
    </div>        
    <div class="row">

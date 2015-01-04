@@ -43,7 +43,7 @@
 
               <% when 'free' %>
                 <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Nueva reserva"> 
-                  <%= link_to "", new_resource_booking_path(:start => date.to_datetime, :finish => date.to_datetime + 1.day, :user_id =>current_user.id, :view =>"calendar"),  :class=>"fi-pencil" %>
+                  <%= link_to "", new_resource_booking_path(:start => date.to_datetime, :finish => date.to_datetime + 1.day, :user_id =>current_user.id, :view =>"calendar"),  :class=>"fi-pencil", "data-reveal-id"=>"myModal", "data-reveal-ajax"=>"true" %>
                 </span>
               <% end %>        
             <% end %>
@@ -54,5 +54,7 @@
       </div>
     </div>
       
+<div id="myModal" class="small reveal-modal" data-reveal>
 
+</div>
 

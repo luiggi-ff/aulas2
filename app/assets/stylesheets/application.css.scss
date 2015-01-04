@@ -17,6 +17,12 @@
  */
 @import 'foundation-icons';
 @import "foundation/components/tabs";
+
+.reveal-modal-bg {
+position: fixed;
+}
+
+
 ul.hmenu {
   list-style: none; 
   margin: 0 0 2em;

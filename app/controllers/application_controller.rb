@@ -4,8 +4,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
+  def after_sign_in_path_for(resource)
+     own_bookings_path
+  end
+    
   protected
-
+    
   def configure_devise_permitted_parameters
       registration_params = [:full_name, :email, :admin, :password, :password_confirmation]
 

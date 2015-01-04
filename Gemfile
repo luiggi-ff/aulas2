@@ -46,4 +46,3 @@ gem 'her'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
 gem 'foundation-icons-sass-rails'
-gem 'foundation-datetimepicker-rails'

@@ -55,14 +55,14 @@ Rails.application.routes.draw do
   #   end
 
 #ApiConsumer::Application.routes.draw do
-root to: 'resources#index'
+root to: 'pages#wellcome'
 #devise_for :users
 devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 #devise_scope :user do
 #  get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
 #end    
 
-get '/own_bookings' => "bookings#index"
+get '/own_bookings' => "bookings#index", as: :own_bookings
 scope "/admin" do
   resources :users
 end
@@ -73,7 +73,8 @@ resources :resources do
 end
 
 #get 'resources/:id' => 'resources#view'
- 
+
+get '/wellcome' => 'pages#wellcome'
 end
 
 
