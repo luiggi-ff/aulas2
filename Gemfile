@@ -45,4 +45,8 @@ gem 'devise'
 gem 'her'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
+gem 'omniauth-twitter'
 gem 'foundation-icons-sass-rails'
+gem 'sidekiq'
+gem 'sinatra', :require => nil
+gem 'byebug'

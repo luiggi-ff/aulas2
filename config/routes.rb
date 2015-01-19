@@ -77,4 +77,5 @@ end
 get '/wellcome' => 'pages#wellcome'
 end
 
-
+#require 'sidekiq/web'
+#mount  Sidekiq::Web => '/sidekiq'

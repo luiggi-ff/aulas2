@@ -43,7 +43,8 @@ Rails.application.configure do
     authentication: "plain",
     enable_starttls_auto: true,
     user_name: ENV["GMAIL_USERNAME"],
-    password: ENV["GMAIL_PASSWORD"]
+    password: ENV["GMAIL_PASSWORD"],
+    enable_starttls_auto: true
 }  
-    config.action_mailer.perform_deliveries = false
+    config.action_mailer.perform_deliveries = true
 end

@@ -5,9 +5,9 @@ class BookingsController < ApplicationController
   
 
   def index
-    @date = params[:date] ? Date.parse(params[:date]) : Date.tomorrow
-    if @date < Date.tomorrow
-        @date = Date.tomorrow
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
+    if @date < Date.today
+          @date = Date.today
     end
       
     params[:status]||= 'all'
@@ -60,7 +60,7 @@ class BookingsController < ApplicationController
     begin
       if @booking.save
         flash[:notice] = "Booking Saved successfully"
-        UserMailer.booking_created(@booking, @resource).deliver
+          UserMailer.booking_created(@booking, @resource).deliver
         redirect_to resource_bookings_path(view: params[:view],status: params[:status])
       else 
           flash[:error] = "Booking Failed to save"
@@ -79,9 +79,11 @@ class BookingsController < ApplicationController
   def update
     @resource = Resource.find(params[:resource_id])
     @booking = Booking.for_resource(@resource.id).find(params[:id])
+    remind_date = DateTime.parse(@booking.from) - 2.hours
     begin
       @booking.save
       UserMailer.booking_approved(@booking, @resource).deliver
+      UserMailer.delay_until(remind_date, :retry => false).booking_reminder(@booking.id, @resource.id)
       flash[:notice] = "Booking Updated successfully"
     rescue Exception => e
       flash[:error] = "Booking Failed to Update"

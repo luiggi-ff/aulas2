@@ -28,7 +28,7 @@
               <%=b.status||='free'%>
           </td>
           <td>
-              <%=b.owner == '' ? " ": User.find(b.owner).full_name%>
+              <%=b.owner == '' ? " ": User.find(b.owner).full_name ||=b.owner %>
           </td>
           <td>
             <% case b.status %>
