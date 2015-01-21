@@ -10,34 +10,24 @@ class BookingsController < ApplicationController
           @date = Date.today
     end
       
-    params[:status]||= 'all'
+    #params[:status]||= 'all'
 
-    if params[:view]=="calendar"
-       status = 'all'
+    if params[:view]=="calendar" || params[:status].nil?
+       @status = 'all'
     else 
-       status = params[:status]
+       @status = params[:status]
     end
-    @status = params[:status]
-
       
     if params[:resource_id].nil? || params[:view]=='own_bookings'
-        
-        @own_bookings = Booking.get("/bookings", user: current_user.id, status: @status)
-        render 'index_own'  
+       @own_bookings = Booking.get("/bookings", user: current_user.id, status: @status)
+       render 'index_own'  
     else 
-      
        @resource = Resource.find(params[:resource_id]) 
-       bookings = Booking.for_resource(@resource.id).where(status: status).where(date: @date)
-
-       if params[:view]!='calendar' && params[:status]!='all'
-          @all_slots=bookings
+       if params[:view]!='calendar' && @status!='all'
+          @all_slots= @resource.bookings(@date,@status)
        else
-          availability = Availability.for_resource(@resource.id).where(date: @date)
-          @all_slots = bookings + availability
-          @all_slots.sort! { |a,b| a[:start] <=> b[:start]}
+           @all_slots = @resource.all_slots(@date,@status)
        end
-    
-
        if params[:view]=="calendar"
           render 'index_calendar'
        else 
@@ -61,7 +51,7 @@ class BookingsController < ApplicationController
       if @booking.save
         flash[:notice] = "Booking Saved successfully"
           UserMailer.booking_created(@booking, @resource).deliver
-        redirect_to resource_bookings_path(view: params[:view],status: params[:status])
+          redirect_to resource_bookings_path( view: params[:view],status: params[:status])
       else 
           flash[:error] = "Booking Failed to save"
           redirect_to resource_bookings_path(view: params[:view],status: params[:status])

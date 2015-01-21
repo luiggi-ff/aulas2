@@ -1,20 +1,24 @@
 require 'test_helper'
 
 class ResourcesControllerTest < ActionController::TestCase
+  def setup
+    sign_in users(:one)
+  end    
+    
   test "should get index" do
     get :index
     assert_response :success
     assert_not_nil assigns(:resources)
   end
 
-#  test "should create resource" do
-#    post(:create, {name: 'res1', description: 'res1'})
-#    assert_redirected_to resources_path
-#  end
-
   test "should not create resource" do
     post :create
     assert_response :success
+  end
+
+  test "should create resource" do
+    post(:create, {name: 'Some title', description: 'some description'})
+    assert_redirected_to resources_path(assigns(:resources))
   end
 
 

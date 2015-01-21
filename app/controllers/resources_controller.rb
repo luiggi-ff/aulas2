@@ -19,12 +19,15 @@ class ResourcesController < ApplicationController
       resource.name = params[:name]
       resource.description = params[:description]
     begin
+      unless resource.valid? 
+          raise "error, missing name and/or description"  
+      end
       resource.save
       flash[:notice] = "Resource Saved successfully"
       redirect_to resources_path 
     rescue Exception => e
-     flash[:error] = "Resource Failed to save"
-     render :new
+      flash[:error] = "Resource Failed to save"
+      render :new
     end
   end
 

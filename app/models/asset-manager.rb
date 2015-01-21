@@ -3,6 +3,23 @@ class Resource
   has_many :bookings
   has_many :availabilities
   parse_root_in_json true, format: :active_model_serializers
+    
+  attributes :name, :description
+  validates :name, presence: true
+  validates :description, presence: true
+    
+  def bookings (date, status)
+      bookings = Booking.for_resource(self.id).where(status: status).where(date: date)
+  end    
+
+  def availabilities (date)
+      availability = Availability.for_resource(self.id).where(date: date)
+  end    
+
+    def all_slots (date, status)
+        all_slots = self.bookings(date,status) + self.availabilities(date)
+      all_slots.sort! { |a,b| a[:start] <=> b[:start] } 
+  end   
 end
 
 class Booking
@@ -15,7 +32,7 @@ class Booking
   scope :for_resource, -> (id){where(_resource_id: id) }    
 
     
-  custom_get :own
+#  custom_get :own
     
   def owner
     @owner ||= User.find(self.user.to_i)
