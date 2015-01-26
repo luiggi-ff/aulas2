@@ -9,12 +9,17 @@
 //
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
+//, value: (this.getAttribute("data-start"))
+//, value:(this.getAttribute("data-finish"))
 //
 //= require jquery
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require foundation-datetimepicker
 //= require_tree .
-$(function(){ $(document).foundation(); 
-
+$(function(){ 
+    $(document).foundation(); 
+    $('.datetimepicker').fdatetimepicker();
+    
 });

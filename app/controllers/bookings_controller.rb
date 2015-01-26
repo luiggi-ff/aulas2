@@ -37,7 +37,7 @@ class BookingsController < ApplicationController
   end
 
   def new 
-     render 'bookings/new' , layout: false
+      render 'bookings/new' , layout: true
   end
 
   def create

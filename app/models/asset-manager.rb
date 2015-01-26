@@ -16,11 +16,12 @@ class Resource
       availability = Availability.for_resource(self.id).where(date: date)
   end    
 
-    def all_slots (date, status)
-        all_slots = self.bookings(date,status) + self.availabilities(date)
+  def all_slots (date, status)
+      all_slots = self.bookings(date,status) + self.availabilities(date)
       all_slots.sort! { |a,b| a[:start] <=> b[:start] } 
   end   
 end
+
 
 class Booking
   require 'user' 

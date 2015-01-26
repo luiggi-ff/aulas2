@@ -50,3 +50,5 @@ gem 'foundation-icons-sass-rails'
 gem 'sidekiq'
 gem 'sinatra', :require => nil
 gem 'byebug'
+#gem 'jquery-datetimepicker-rails'
+gem 'foundation-datetimepicker-rails'

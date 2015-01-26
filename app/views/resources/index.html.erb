@@ -15,10 +15,10 @@
       <td><%=r.description%></td>
       <td>
           <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Ver lista"> 
-          <%= link_to '<i class="fi-list"></i>'.html_safe, resource_bookings_path(:resource_id =>r.id) %> 
+          <%= link_to '<i class="fi-list">Lista</i>'.html_safe, resource_bookings_path(:resource_id =>r.id), alt: 'Lista' %> 
           </span>
           <span data-tooltip aria-haspopup="true" class="has-tip tip-right" title="Ver calendario"> 
-          <%= link_to '<i class="fi-calendar"></i>'.html_safe, resource_bookings_path(:resource_id =>r.id, :view=>"calendar") %>  
+          <%= link_to '<i class="fi-calendar">Calendario</i>'.html_safe, resource_bookings_path(:resource_id =>r.id, :view=>"calendar"), alt: 'Calendario' %>  
           </span>
       </td>
     </tr>

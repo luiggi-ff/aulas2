@@ -35,23 +35,23 @@
               <% when 'approved' %> 
                 <% if (current_user.admin? or current_user.id == b.user.to_i) %>
                   <span data-tooltip aria-haspopup="true" class="has-tip" title="Cancelar reserva"> 
-                    <%= link_to "", resource_booking_path(:id => b.id), :method => :delete, :class=>"fi-trash"   %>
+                    <%= link_to "Cancelar", resource_booking_path(:id => b.id), :method => :delete, :class=>"fi-trash"   %>
                   </span>
                 <% end %>
               <% when 'pending' %>  
                 <% if current_user.admin? %>
                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Aprobar reserva"> 
-                    <%= link_to "", resource_booking_path(:id => b.id), :method => :put, :class=>"fi-check"  %> 
+                    <%= link_to "Aprobar", resource_booking_path(:id => b.id), :method => :put, :class=>"fi-check"  %> 
                   </span>
                 <% end %>
                 <% if (current_user.admin? || current_user.id == b.user.to_i) %>
                   <span data-tooltip aria-haspopup="true" class="has-tip" title="Rechazar reserva"> 
-                    <%= link_to "", resource_booking_path(:id => b.id), :method => :delete, :class=>"fi-trash"  %>
+                    <%= link_to "Rechazar", resource_booking_path(:id => b.id), :method => :delete, :class=>"fi-trash"  %>
                   </span>
                 <% end %> 
               <% when 'free' %>     
                <span data-tooltip aria-haspopup="true" class="has-tip" title="Nueva reserva"> 
-                  <%= link_to "", new_resource_booking_path(:start => b.start, :finish => b.finish, :user_id =>current_user.id),  :class=>"fi-pencil", "data-reveal-id"=>"myModal", "data-reveal-ajax"=>"true" %>
+                  <%= link_to "Crear", new_resource_booking_path(:start => b.start, :finish => b.finish, :user_id =>current_user.id),  :class=>"fi-pencil" %>
                 </span>
               <% end %>
           </td>
@@ -60,7 +60,4 @@
   </table>
 
 
-<div id="myModal" class="small reveal-modal" data-reveal>
-
-</div>
 
