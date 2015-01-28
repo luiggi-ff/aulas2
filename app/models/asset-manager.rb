@@ -9,18 +9,42 @@ class Resource
   validates :description, presence: true
     
   def bookings (date, status)
-      bookings = Booking.for_resource(self.id).where(status: status).where(date: date)
+      bookings = Booking.for_resource(self.id).where(status: status).where(date: date).where(limit: '1')
   end    
 
   def availabilities (date)
-      availability = Availability.for_resource(self.id).where(date: date)
+      availability = Availability.for_resource(self.id).where(date: date).where(limit: '1')
   end    
 
   def all_slots (date, status)
       all_slots = self.bookings(date,status) + self.availabilities(date)
       all_slots.sort! { |a,b| a[:start] <=> b[:start] } 
+      #byebug
+      slots = []
+      all_slots.each do |s| 
+                start = s[:start]
+                #byebug
+                finish= Time.parse(s.finish)
+                while start < finish
+                   new_finish = (Time.parse(start) + 1.hour).to_s
+                   #slot = Hash[id: s[:id], start: start, finish: new_finish, name: s[:name], status:s[:status], owner: [:owner]]
+                    slot = Marshal::load(Marshal.dump(s))
+                   
+                   slot.start = start
+                   slot.finish = new_finish
+                   start = new_finish
+                   #byebug
+                   slots.push(slot)
+                   
+                end
+          
+             end
+      
+      return slots
   end   
 end
+
+
 
 
 class Booking

@@ -1,7 +1,6 @@
   <% if user_signed_in? %>
      <div class="icon-bar five-up">         
-     <a class="item" href="/own_bookings?status=all"> <i class="fi-pencil"></i> <label>Mis reservas</label> </a> 
-     <%= link_to('<i class="fi-annotate"></i> <label>Aulas</label> </a>'.html_safe, resources_path, :class => "item") %>
+     <%= link_to('<i class="fi-pencil"></i> <label>Reservas</label> </a>'.html_safe, resource_bookings_path(:resource_id =>'0'), :class => "item") %>     <%= link_to('<i class="fi-annotate"></i> <label>Aulas</label> </a>'.html_safe, resources_path, :class => "item") %>
      <% if current_user.admin? %>
        <%= link_to '<i class="fi-torsos"></i> <label>Usuarios</label> </a>'.html_safe, users_path, :class=>"item" %>
      <% end %>
@@ -18,3 +17,7 @@
 <div id="myModal" class="small reveal-modal" data-reveal>
 
 </div>
+         
+         
+         
+         

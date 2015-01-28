@@ -52,3 +52,4 @@ gem 'sinatra', :require => nil
 gem 'byebug'
 #gem 'jquery-datetimepicker-rails'
 gem 'foundation-datetimepicker-rails'
+gem 'rails-i18n', '~> 4.0.0' # For 4.0.x

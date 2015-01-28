@@ -1,19 +1,11 @@
-<%= link_to "Volver", resources_path %> | 
-<dl class="sub-nav"> 
-    <dt>Filter:</dt> 
-    <dd class =<%= @status == 'all' ? 'active' : '' %>><a href='/own_bookings?status=all'> All </a></dd> 
-    <dd class =<%= @status == 'pending' ? 'active' : '' %>><a href='/own_bookings?status=pending'> Pending </a></dd> 
-    <dd class =<%= @status == 'approved' ? 'active' : '' %>><a href='/own_bookings?status=approved'> Approved </a></dd> 
-</dl>
-
-<p>Lista de reservas de: <%= current_user.full_name %></p>
-
+    <%= render "index_heading" %>
     <table width="100%">
       <tr>
         <th>Aula </th> 
         <th>Inicio</th>
         <th>Fin</th>
         <th>Estado </th>
+        <th>Acciones </th>
       </tr>
       <%@own_bookings.each do |b|%>
         <tr>
@@ -30,25 +22,7 @@
               <%=b.status%>
           </td>
           <td>
-            <% case b.status %>
-              <% when 'approved' %> 
-                <% if (current_user.admin? or current_user.id == b.user.to_i) %>
-                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Cancelar reserva"> 
-                    <%= link_to "", resource_booking_path(:resource_id => b.resource_id,:id => b.id, :view=>'own'), :method => :delete, :class=>"fi-trash"   %>
-                  </span>
-                <% end %>
-              <% when 'pending' %>  
-                <% if current_user.admin? %>
-                   <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Aprobar reserva"> 
-                    <%= link_to "", resource_booking_path(:resource_id => b.resource_id,:id => b.id, :view=>'own'), :method => :put, :class=>"fi-check"  %> 
-                  </span>
-                <% end %>
-                <% if (current_user.admin? || current_user.id == b.user.to_i) %>
-                  <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Rechazar reserva"> 
-                    <%= link_to "", resource_booking_path(:resource_id => b.resource_id, :id => b.id, :view=>'own'), :method => :delete, :class=>"fi-trash"  %>
-                  </span>
-                <% end %> 
-             <% end %>
+             <%= render partial: 'index_actions', locals: {b: b} %>
           </td>
         </tr>
       <%end%>

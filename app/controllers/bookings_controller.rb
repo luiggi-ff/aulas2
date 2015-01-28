@@ -5,35 +5,56 @@ class BookingsController < ApplicationController
   
 
   def index
+    
+    
+    if params[:goto]
+        @day = Date.civil(params[:goto][:"day(1i)"].to_i,params[:goto][:"day(2i)"].to_i,params[:goto][:"day(3i)"].to_i)
+        #dmy = params[:goto][:"day(1i)"].to_i,params[:goto][:"day(2i)"].to_i,params[:goto][:"day(3i)"].to_i
+        #if dmy[0]!=0 && dmy[1]!=0 && dmy[2]!=0
+        #    @day = Date.civil(dmy)
+        #end
+    end
+        
     @date = params[:date] ? Date.parse(params[:date]) : Date.today
     if @date < Date.today
           @date = Date.today
     end
       
-    #params[:status]||= 'all'
+    
+    @resources = Resource.all.collect {|r| [r.name, r.id]}
 
-    if params[:view]=="calendar" || params[:status].nil?
+      
+    if params[:new_resource_id]
+        params[:resource_id] = params[:new_resource_id]
+        #@resource_id=params[:new_resource_id]
+    end
+      
+    if params[:goto]
+        @date = @day
+    end
+    
+      
+    if  params[:status].nil?
        @status = 'all'
     else 
        @status = params[:status]
     end
+
       
-    if params[:resource_id].nil? || params[:view]=='own_bookings'
+    if params[:resource_id].nil? || params[:resource_id]=='0'
        @own_bookings = Booking.get("/bookings", user: current_user.id, status: @status)
        render 'index_own'  
     else 
        @resource = Resource.find(params[:resource_id]) 
-       if params[:view]!='calendar' && @status!='all'
+       if @status!='all'
           @all_slots= @resource.bookings(@date,@status)
        else
            @all_slots = @resource.all_slots(@date,@status)
        end
-       if params[:view]=="calendar"
-          render 'index_calendar'
-       else 
-          render 'index_list'
-       end
-    end
+        @all_slots.reject! {|s| s.start<Time.now}
+        @all_slots.sort! { |a,b| a[:start] <=> b[:start] }
+        render 'index_list'
+      end
   end
 
   def new 
