@@ -39,7 +39,7 @@ gem 'rest-client'
 # Use debugger
 # gem 'debugger', group: [:development, :tcer'
 gem 'therubyracer'
-gem 'foundation-rails'
+#gem 'foundation-rails'
 gem 'rails_layout'
 gem 'devise'
 gem 'her'
@@ -51,5 +51,8 @@ gem 'sidekiq'
 gem 'sinatra', :require => nil
 gem 'byebug'
 #gem 'jquery-datetimepicker-rails'
-gem 'foundation-datetimepicker-rails'
+#gem 'foundation-datetimepicker-rails'
 gem 'rails-i18n', '~> 4.0.0' # For 4.0.x
+gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem "twitter-bootstrap-rails"
+gem 'bootstrap_form'

@@ -67,10 +67,10 @@ scope "/admin" do
   resources :users
 end
 
-resources :resources do
-  resources :bookings
- # resources :availabilities
-end
+resources :resources
+
+resources :bookings
+
 
 #get 'resources/:id' => 'resources#view'
 

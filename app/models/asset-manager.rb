@@ -39,7 +39,7 @@ class Resource
                 end
           
              end
-      
+      #byebug
       return slots
   end   
 end

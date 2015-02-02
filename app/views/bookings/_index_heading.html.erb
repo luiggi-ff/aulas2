@@ -1,18 +1,25 @@
-<div class="row">
+<div >
 <%= form_tag( { :action => :index }, { :method => :get }) do %>
-<%= label_tag 'new_resource_id', 'Reservas de:' %>
-<%= select_tag :new_resource_id , options_for_select([[current_user.full_name,0]] + @resources, :selected => @resource.nil? ? 0 : @resource.id) %>
+<%= label_tag 'new_resource_id', 'Aula:' %>
+<%= select_tag :resource_id , options_for_select(@resources, :selected => @resource_id) %><br>
+
+<% if current_user.admin? %>
+<%= label_tag 'new_user_id', 'Usuario:' %>
+<%= select_tag :user_id , options_for_select( @users, :selected => @user_id) %> <br>
+<% end %>
 <%= label_tag 'goto', 'Fecha:' %>
 <%= date_select('goto', 'day', options = {selected: @date, start_year: 2014, end_year:2015, include_blank: false} , html_options = { class: 'select-date'})%>
 <%= submit_tag "Ir", class: "btn btn-primary" %>
 <%end%>
 </div>
 <br>
-<div class="row">
-<dl class="sub-nav"> 
-    <dt>Filter:</dt> 
-    <dd class =<%= @status == 'all' ? 'active' : '' %>><%= link_to "All", resource_bookings_path(status:"all", resource_id: @resource.nil? ? 0 : @resource.id)%></dd> 
-    <dd class =<%= @status == 'pending' ? 'active' : '' %>><%= link_to "Pending", resource_bookings_path(status:"pending", resource_id: @resource.nil? ? 0 : @resource.id)%></dd> 
-    <dd class =<%= @status == 'approved' ? 'active' : '' %>><%= link_to "Approved", resource_bookings_path(status:"approved", resource_id: @resource.nil? ? 0 : @resource.id)%></dd> 
-</dl>
+<div>
+    
+<p>Filter:</p>
+<ul class="nav nav-pills">
+    <%#  %>
+    <% @allowed_status.each do |s| %>
+       <li role="presentation" <%= @status == s ? 'class = active' : '' %>><%= link_to s, bookings_path(status: s, resource_id: @resource.nil? ? 0 : @resource.id, user_id: @user_id, date: @date)%></li>    
+    <% end %>
+</ul>
 </div>

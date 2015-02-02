@@ -2,22 +2,22 @@
               <% when 'approved' %> 
                 <% if (current_user.admin? or current_user.id == b.user.to_i) %>
                   <span data-tooltip aria-haspopup="true" class="has-tip" title="Cancelar reserva"> 
-                    <%= link_to "Cancelar", resource_booking_path(:id => b.id, date: @date), :method => :delete, :class=>"fi-trash"   %>
+                    <%= link_to "Cancelar", booking_path(resource_id: resource_id, :id => b.id, date: @date), data: { confirm: "Are you sure?" }, :method => :delete, :class=>"fi-trash"   %>
                   </span>
                 <% end %>
               <% when 'pending' %>  
                 <% if current_user.admin? %>
                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Aprobar reserva"> 
-                    <%= link_to "Aprobar", resource_booking_path(:id => b.id, date: @date), :method => :put, :class=>"fi-check"  %> 
+                    <%= link_to "Aprobar", booking_path(resource_id: resource_id, :id => b.id, date: @date), data: { confirm: "Are you sure?" }, :method => :put, :class=>"fi-check"  %> 
                   </span>
                 <% end %>
                 <% if (current_user.admin? || current_user.id == b.user.to_i) %>
                   <span data-tooltip aria-haspopup="true" class="has-tip" title="Rechazar reserva"> 
-                    <%= link_to "Rechazar", resource_booking_path(:id => b.id, date: @date), :method => :delete, :class=>"fi-trash"  %>
+                    <%= link_to "Rechazar", booking_path(resource_id: resource_id, :id => b.id, date: @date), data: { confirm: "Are you sure?" }, :method => :delete, :class=>"fi-trash"  %>
                   </span>
                 <% end %> 
               <% when 'free' %>     
                <span data-tooltip aria-haspopup="true" class="has-tip" title="Nueva reserva"> 
-                  <%= link_to "Crear", new_resource_booking_path(resource_id: resource_id, :start => b.start, :finish => b.finish, :user_id =>current_user.id, date: @date),  :class=>"fi-pencil" %>
+                  <%= link_to "Crear", new_booking_path(resource_id: resource_id, :start => b.start, :finish => b.finish, :user_id =>current_user.id, date: @date),  data: { confirm: "Are you sure?" }, :class=>"fi-pencil" %>
                 </span>
               <% end %>

@@ -10,27 +10,11 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require rails_bootstrap_forms
  *= require_tree .
  *= require_self
- //= require foundation_and_overrides
+*/
 
- */
-@import 'foundation-icons';
-@import "foundation/components/tabs";
-@import 'foundation-datetimepicker';
-
-.reveal-modal-bg {
-position: fixed;
+body { 
+    padding-top: 65px; 
 }
-
-
-ul.hmenu {
-  list-style: none; 
-  margin: 0 0 2em;
-  padding: 0;
-}
-
-ul.hmenu li {
-  display: inline;  
-}
-

@@ -15,7 +15,7 @@
       <td><%=r.description%></td>
       <td>
           <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Ver lista"> 
-          <%= link_to '<i class="fi-list">Lista</i>'.html_safe, resource_bookings_path(:resource_id =>r.id), alt: 'Lista' %> 
+          <%= link_to '<i class="fi-list">Lista</i>'.html_safe, bookings_path(:resource_id =>r.id), alt: 'Lista' %> 
           </span>
       </td>
     </tr>
