@@ -83,6 +83,12 @@ class BookingsController < ApplicationController
        @status = @allowed_status.first
     end
 
+    
+    session[:user_id] = @user_id
+    session[:resource_id] = @resource_id
+    session[:status] = @status
+    session[:date] = @date
+      
       
     #if params[:resource_id].nil? || 
     if  params[:resource_id]=='0'

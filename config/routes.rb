@@ -62,7 +62,7 @@ devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_call
 #  get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
 #end    
 
-get '/own_bookings' => "bookings#index", as: :own_bookings
+#get '/own_bookings' => "bookings#index", as: :own_bookings
 scope "/admin" do
   resources :users
 end
