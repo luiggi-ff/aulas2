@@ -1,0 +1,32 @@
+    <%= render "index_heading" %>
+    <table width="100%">
+      <tr>
+        <th>Aula </th> 
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Estado </th>
+        <th>Acciones </th>
+      </tr>
+      <%@user_bookings.each do |b|%>
+        <tr>
+          <td>
+              <%=Resource.find(b.resource_id).name%>
+          </td>
+          <td>
+              <%=Time.parse(b.start).strftime('%F %R')%>
+         </td>
+          <td>
+              <%=Time.parse(b.finish).strftime('%F %R')%>
+          </td>
+          <td>
+              <%=b.status%>
+          </td>
+          <td>
+             <%= render partial: 'index_actions', locals: {b: b} %>
+          </td>
+        </tr>
+      <%end%>
+  </table>
+
+
+

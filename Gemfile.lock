@@ -55,6 +55,7 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise-bootstrap-views (0.0.4)
     erubis (2.7.0)
     execjs (2.2.2)
     faraday (0.9.0)
@@ -218,6 +219,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.0.0)
   devise
+  devise-bootstrap-views
   foundation-icons-sass-rails
   her
   jbuilder (~> 2.0)

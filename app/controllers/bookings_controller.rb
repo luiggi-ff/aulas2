@@ -5,115 +5,103 @@ class BookingsController < ApplicationController
   
 
   def index
-    
-    
-    #if params[:goto]
-    #    @day = Date.civil(params[:goto][:"day(1i)"].to_i,params[:goto][:"day(2i)"].to_i,params[:goto][:"day(3i)"].to_i)
-        #dmy = params[:goto][:"day(1i)"].to_i,params[:goto][:"day(2i)"].to_i,params[:goto][:"day(3i)"].to_i
-        #if dmy[0]!=0 && dmy[1]!=0 && dmy[2]!=0
-        #    @day = Date.civil(dmy)
-        #end
-    #end
+    session[:options] ||= {}
+    # set defaults
+    session[:options]['resource_id'] ||= '0'
+    session[:options]['user_id'] = current_user.id
       
-    #@date = params[:date] ? Date.parse(params[:date]) : Date.today
-    #if @date < Date.today
-    #      @date = Date.today
-    #end
 
+      
     if params[:goto]
-        @date = Date.civil(params[:goto][:"day(1i)"].to_i,params[:goto][:"day(2i)"].to_i,params[:goto][:"day(3i)"].to_i)
+        date = Date.civil(params[:goto][:"day(1i)"].to_i,params[:goto][:"day(2i)"].to_i,params[:goto][:"day(3i)"].to_i)
+        session[:options]['date'] = date
     else
         if params[:date]
-            @date = Date.parse(params[:date])
+            date = Date.parse(params[:date])
         else
-            @date = Date.today
+            date = Date.today
         end
-    end  
-      
+        session[:options]['date'] = date
+    end 
+    
+
       
     @resources = [['all',0]] + Resource.all.collect {|r| [r.name, r.id]}
-    @users = [['all',0]] + User.all.collect {|r| [r.email, r.id]}
-      
+    @users = [['all',0]] + User.all.collect {|u| [u.email, u.id]}
     
-    
-    
-    #if current_user.admin?
-    #    @users = User.all.collect {|r| [r.email, r.id]}
-    #else
-    #    @users = [[current_user.email, current_user.id]]
-    #end
-        
-    #if params[:new_resource_id]
-    #    params[:resource_id] = params[:new_resource_id]
-    #    @resource_id=params[:new_resource_id]
-    #end
-    @resource_id=params[:resource_id]
-    @user_id=params[:user_id]
       
-    #if params[:new_user_id]
-    #    @user = Resource.find(params[:new_user_id])
-    #else
-    #    @user = current_user
-    #end
+# check if selected resource was changed by user
+    if params[:resource_id]
+      if @resources.detect {|name,id| id.to_s==params[:resource_id]}
+       # resource_id=params[:resource_id]
+#      else 
+ #       resource_id= '0'
+  #    end
+      session[:options]['resource_id'] = params[:resource_id]
+    end
+    end 
       
       
+      
+      
+# check if selected user was changed by user      
+    if params[:user_id]
+      if  current_user.admin? && @users.detect {|name,id| id.to_s==params['user_id']}
+          session[:options]['user_id'] = params[:user_id]
+      #else
+      #    user_id = current_user.id
+      end
+    #else 
+    #  user_id = current_user.id
+    end
+    #session[:options]['user_id'] = user_id
+
+#    if params[:user_id]
+#      if  current_user.admin? && @users.detect {|name,id| id.to_s==params['user_id']}
+#          user_id = params[:user_id]
+#      end
+#    end
+#    user_id ||= current_user.id
+#    session[:options]['user_id'] = user_id
+      
+      
+      
+# initialize allowed_status based in resource selected and user.admin?      
     @allowed_status = ['all', 'pending', 'approved']
-    
-    if @resource_id=='0' || (current_user.admin? &&  @user_id.to_i != current_user.id)
+    if session[:options]['resource_id']=='0' || session[:options]['user_id'] != current_user.id.to_s
         @allowed_status = ['pending', 'approved']
     end  
-      
-    #if current_user.admin?
-    #    if @resource_id=='0' || @user_id.to_i != current_user.id
-    #        @allowed_status = ['pending', 'approved']
-    #    end
-    #else 
-    #    if @resource_id=='0'
-    #        @allowed_status = ['pending', 'approved']
-    #    end
-    #end
-     
-    
-      
-    if  !params[:status].nil? 
+
+# check if selected status was changed by user      
+    if params[:status]
        if @allowed_status.include?(params[:status])
-           @status = params[:status]
+           status = params[:status]
+           session[:options]['status'] = status
        end
     else 
-       @status = @allowed_status.first
+       status = @allowed_status.first
+       session[:options]['status'] = status
     end
 
-    
-    session[:user_id] = @user_id
-    session[:resource_id] = @resource_id
-    session[:status] = @status
-    session[:date] = @date
       
       
-    #if params[:resource_id].nil? || 
-    if  params[:resource_id]=='0'
-        
-        if current_user.admin? && !params[:user_id].nil? 
-            @user_id = params[:user_id]
-        else 
-            @user_id = current_user.id
-        end
-        
-        @user_bookings = Booking.get("/bookings", user: @user_id, status: @status)
+# put variables sent to view in sync with session[:options]      
+    @user_id = session[:options]['user_id']
+    @resource_id = session[:options]['resource_id']
+    @status = session[:options]['status']
+    @date = session[:options]['date']
+      
+    # byebug
+    if  session[:options]['resource_id']=='0' || session[:options]['user_id'].to_s != current_user.id.to_s
+        all_bookings = Resource.all.collect {|r| r.all_slots(session[:options]['date'],session[:options]['status'])}.reject { |c| c.empty? }
+        @user_bookings = all_bookings.select {|b| b.owner.user_id.to_s == session[:options]['user_id'].to_s}
         render 'index_by_user'  
     else 
-       @resource = Resource.find(params[:resource_id])
        
-       if @status!='all'
-          @all_slots= @resource.bookings(@date,@status)
-       else
-          @all_slots = @resource.all_slots(@date,@status)
-       end
-        #byebug
-        @all_slots.reject! {|s| s.start<Time.now}
-        #@all_slots.sort! { |a,b| a[:start] <=> b[:start] }
-        render 'index_list'
-      end
+       @resource = Resource.find(session[:options]['resource_id'])
+       @all_slots = @resource.all_slots(session[:options]['date'],session[:options]['status'])
+       render 'index_list'
+    end
   end
 
   def new 
@@ -128,14 +116,17 @@ class BookingsController < ApplicationController
       if @booking.save
         flash[:notice] = "Booking Saved successfully"
           UserMailer.booking_created(@booking, @resource).deliver
-          redirect_to bookings_path(resource_id: params[:resource_id], user_id: params[:user_id],status: params[:status], date: params[:date])
+          #redirect_to bookings_path(resource_id: params[:resource_id], user_id: params[:user_id],status: params[:status], date: params[:date])
+          redirect_to bookings_path
       else 
           flash[:error] = "Booking Failed to save"
-          redirect_to bookings_path(resource_id: params[:resource_id], user_id: params[:user_id],status: params[:status], date: params[:date])
+          #redirect_to bookings_path(resource_id: params[:resource_id], user_id: params[:user_id],status: params[:status], date: params[:date])
+          redirect_to bookings_path
       end
     rescue Exception => e
      flash[:error] = "Booking Failed to save"
-     redirect_to bookings_path(resource_id: params[:resource_id], user_id: params[:user_id],status: params[:status], date: params[:date])
+     #redirect_to bookings_path(resource_id: params[:resource_id], user_id: params[:user_id],status: params[:status], date: params[:date])
+     redirect_to bookings_path
     end
   end
 
@@ -177,7 +168,8 @@ class BookingsController < ApplicationController
     rescue Exception => e
       flash[:error] = "Booking Failed to Update"
     end
-      redirect_to bookings_path(resource_id: params[:resource_id], view: params[:view],status: params[:status])
+      #redirect_to bookings_path(resource_id: params[:resource_id], view: params[:view],status: params[:status])
+      redirect_to bookings_path
   end
 
   def destroy
@@ -200,7 +192,8 @@ class BookingsController < ApplicationController
             flash[:error] = "Booking Failed to Cancel"
         end            
     end
-      redirect_to bookings_path(resource_id: params[:resource_id], view: params[:view],status: params[:status])
+      #redirect_to bookings_path(resource_id: params[:resource_id], view: params[:view],status: params[:status])
+      redirect_to bookings_path
   end
 
 end
