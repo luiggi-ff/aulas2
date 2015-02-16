@@ -18,6 +18,6 @@
                 <% end %> 
               <% when 'free' %>     
                <span data-tooltip aria-haspopup="true" class="has-tip" title="Nueva reserva"> 
-                  <%= link_to "Crear", new_booking_path(resource_id: @resource_id, :start => b.start, :finish => b.finish, :user_id =>current_user.id, date: @date),  data: { confirm: "Are you sure?" }, :class=>"fi-pencil" %>
+                  <%= link_to "Crear", new_booking_path(resource_id: @resource_id, :start => b.start, :finish => b.finish, :user_id =>current_user.id),  data: { confirm: "Are you sure?" }, :class=>"fi-pencil" %>
                 </span>
               <% end %>

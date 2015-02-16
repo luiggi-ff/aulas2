@@ -46,5 +46,7 @@ Rails.application.configure do
     password: ENV["GMAIL_PASSWORD"],
     enable_starttls_auto: true
 }  
-    config.action_mailer.perform_deliveries = true
+  config.action_mailer.perform_deliveries = true
+    
+  API_BASE_URL = "http://orient-vega.codio.io:9292/" # base url of the API
 end

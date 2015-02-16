@@ -6,6 +6,8 @@
             <% if current_user.admin? %>
                 <%= drop_down "Administracion" do %>
                     <%= menu_item "Aulas", resources_path %>
+                    <%= menu_item "Crear aula", new_resource_path %>
+                    <%= menu_divider %>
                     <%= menu_item "Usuarios",  users_path %>
                 <% end %>
             <% end %>

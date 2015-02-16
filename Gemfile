@@ -57,3 +57,6 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem "twitter-bootstrap-rails"
 gem 'bootstrap_form'
 gem 'devise-bootstrap-views'
+group :test do
+  gem 'simplecov', '>=0.3.8', :require => false
+end

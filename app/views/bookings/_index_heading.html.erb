@@ -1,24 +1,25 @@
-<div >
-<%= form_tag( { :action => :index }, { :method => :get }) do %>
-<%= label_tag 'new_resource_id', 'Aula:' %>
-<%= select_tag :resource_id , options_for_select(@resources, :selected => @resource_id) %><br>
-
-<% if current_user.admin? %>
-<%= label_tag 'new_user_id', 'Usuario:' %>
-<%= select_tag :user_id , options_for_select( @users, :selected => @user_id) %> <br>
-<% end %>
-<%= label_tag 'goto', 'Fecha:' %>
-<%= date_select('goto', 'day', options = {selected: @date, start_year: 2014, end_year:2015, include_blank: false} , html_options = { class: 'select-date'})%>
-<%= submit_tag "Ir", class: "btn btn-primary" %>
-<%end%>
-</div>
-<br>
-<div>
-    
-<p>Filter:</p>
+<div class="container">
+<div class="row">
+   <div class="col-md-8">
+       
+          <h1><%=@resource.name %> -  <%= @date %></h1>
+       <p>Estado:</p>
 <ul class="nav nav-pills">
     <% @allowed_status.each do |s| %>
        <li role="presentation" <%= @status == s ? 'class = active' : '' %>><%= link_to s, bookings_path(status: s)%></li>    
     <% end %>
 </ul>
+
+   </div>
+   <div class="col-md-4">
+        <h2>Ir a</h2>
+        <%= form_tag( { :action => :index }, { :method => :get }) do %>
+        <%= label_tag 'new_resource_id', 'Aula:' %>
+        <%= select_tag :resource_id , options_for_select(@resources, :selected => @resource_id) %><br>
+        <%= label_tag 'goto', 'Fecha:' %>
+        <%= date_select('goto', 'day', options = {selected: @date,  include_blank: false} )%>
+        <%= submit_tag "Ir", class: "btn btn-primary" %>
+        <%end%>
+    </div>
+  </div>
 </div>

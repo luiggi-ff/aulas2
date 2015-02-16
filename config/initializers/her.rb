@@ -1,5 +1,5 @@
 # config/initializers/her.rb
-Her::API.setup url: "http://orient-vega.codio.io:9292" do |c|
+Her::API.setup url: API_BASE_URL do |c|
   # Request
   c.use Faraday::Request::UrlEncoded
 
@@ -8,4 +8,5 @@ Her::API.setup url: "http://orient-vega.codio.io:9292" do |c|
 
   # Adapter
   c.use Faraday::Adapter::NetHttp
+  c.use Faraday::Response::RaiseError
 end

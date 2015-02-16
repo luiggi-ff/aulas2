@@ -1,8 +1,9 @@
 class ResourcesController < ApplicationController
   before_action :authenticate_user!
-  require 'asset-manager'
-  
-  API_BASE_URL = "http://orient-vega.codio.io:9292/" 
+  #require 'asset-manager'
+  require 'resource'
+   require 'db_cleaner'
+  #API_BASE_URL = "http://orient-vega.codio.io:9292/" 
   
 
   def index
@@ -15,20 +16,17 @@ class ResourcesController < ApplicationController
   end
 
   def create
-      resource = Resource.create
-      resource.name = params[:name]
-      resource.description = params[:description]
     begin
+      resource = Resource.create(name: params[:name], description: params[:description])
       unless resource.valid? 
           raise "error, missing name and/or description"  
       end
       resource.save
-      flash[:notice] = "Resource Saved successfully"
-      redirect_to resources_path 
-    rescue Exception => e
-      flash[:error] = "Resource Failed to save"
-      render :new
+      flash[:notice] = "El Aula fue creada exitosamente"
+    rescue => e
+      flash[:error] = "El Aula no pudo ser creada"
     end
+    redirect_to resources_path 
   end
 
 
@@ -41,26 +39,26 @@ class ResourcesController < ApplicationController
   end
 
   def update
-      resource = Resource.find(params[:id])
-      resource.name = params[:name]
-      resource.description = params[:description]
     begin
-      resource.save
-      flash[:notice] = "Resource Updated successfully"
-    rescue Exception => e
-      flash[:error] = "Resource Failed to Update"
+      @resource = Resource.find(params[:id])
+      @resource.name = params[:name]
+      @resource.description = params[:description]
+    
+      @resource.save
+      flash[:notice] = "El Aula fue modificada exitosamente"
+    rescue => e
+      flash[:error] = "El Aula no pudo ser modificada"
     end
     redirect_to resources_path
   end
 
   def destroy
-    resource = Resource.find(params[:id])
-
     begin
-     @resource.destroy
-     flash[:notice] = "Resource Deleted successfully"
-    rescue Exception => e
-     flash[:error] = "Resource Failed to Delete"
+      @resource = Resource.find(params[:id])
+      @resource.destroy
+      flash[:notice] = "El Aula fue eliminada exitosamente"
+    rescue => e
+      flash[:error] = "El Aula no pudo ser borrada"
     end
     redirect_to resources_path
    end

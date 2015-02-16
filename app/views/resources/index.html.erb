@@ -1,23 +1,15 @@
-<% if current_user.admin? %>
-  <%= link_to "Crear aula nueva", new_resource_path %>
-<%end%>
 <%if @resources.present? %>
   <p>Lista de aulas</p>
   <table width="100%">
     <tr>
       <th><%= t('name') %></th>
       <th>Descripcion</th>
-      <th>Ver Reservas</th> 
    </tr>
     <%@resources.each do |r|%>
     <tr>
       <td><%= current_user.admin? ? (link_to r.name, resource_path(r.id)) : r.name %> </td>
       <td><%=r.description%></td>
-      <td>
-          <span data-tooltip aria-haspopup="true" class="has-tip tip-left" title="Ver lista"> 
-          <%= link_to '<i class="fi-list">Lista</i>'.html_safe, bookings_path(:resource_id =>r.id), alt: 'Lista' %> 
-          </span>
-      </td>
+      
     </tr>
     <%end%>
   </table>
