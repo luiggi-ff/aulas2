@@ -104,31 +104,31 @@ class BookingsControllerTest < ActionController::TestCase
   end
      
     test "should  reject booking" do
-      get(:destroy, {'resource_id' => "3", 'id' => "697"})
+      get(:destroy, {'resource_id' => "2", 'id' => "586"})
       assert_redirected_to bookings_path
       assert_response :redirect
       assert_not_nil assigns(:resource)
-      assert_equal 3, assigns(:resource).id
+      assert_equal 2, assigns(:resource).id
       assert_equal "La Reserva fue rechazada exitosamente", flash[:notice]     
   end
 
   test "should cancel booking" do
-      get(:destroy, {'resource_id' => "3", 'id' => "698"})
+      get(:destroy, {'resource_id' => "2", 'id' => "587"})
       assert_redirected_to bookings_path
       assert_response :redirect
       assert_not_nil assigns(:resource)
-      assert_equal 3, assigns(:resource).id
+      assert_equal 2, assigns(:resource).id
       assert_equal "La Reserva fue cancelada exitosamente", flash[:notice]     
   end  
 
   test "should approve booking" do
-      get :update, resource_id: '3', id: '697'
+      get :update, resource_id: '2', id: '586'
       assert_equal 'approved', assigns(:booking).status
       assert_equal "La Reserva fue aprobada", flash[:notice]
   end    
 
   test "should not approve booking" do
-      get :update, resource_id: '87687', id: '697'
+      get :update, resource_id: '87687', id: '586'
       assert_equal "La Reserva no pudo ser aprobada",  flash[:error]
   end    
   

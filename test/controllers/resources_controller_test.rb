@@ -42,18 +42,18 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:resource)
   end
     
-  test "should delete resource 54" do
-    get(:destroy, {'id' => "54"})
+  test "should delete resource 3" do
+    get(:destroy, {'id' => "3"})
     assert_response :redirect
     assert_equal "El Aula fue eliminada exitosamente", flash[:notice]
   end
 
-  test "should update resource 54" do
-    get(:update, {'id' => "54", 'name' => 'other name', 'description' => "some other description"})
+  test "should update resource 3" do
+    get(:update, {'id' => "1", 'name' => 'Aula 5', 'description' => "aula 5"})
     assert_response :redirect
     assert_equal "El Aula fue modificada exitosamente", flash[:notice]
-    assert_equal "other name", assigns(:resource).name
-    assert_equal "some other description", assigns(:resource).description
+    assert_equal "Aula 5", assigns(:resource).name
+    assert_equal "aula 5", assigns(:resource).description
   end
 
   test "should not update resource 500" do

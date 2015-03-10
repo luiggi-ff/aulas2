@@ -3,7 +3,6 @@ class ResourcesController < ApplicationController
   #require 'asset-manager'
   require 'resource'
    require 'db_cleaner'
-  #API_BASE_URL = "http://orient-vega.codio.io:9292/" 
   
 
   def index

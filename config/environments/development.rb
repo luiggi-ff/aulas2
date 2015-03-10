@@ -48,5 +48,5 @@ Rails.application.configure do
 }  
   config.action_mailer.perform_deliveries = true
     
-  API_BASE_URL = "http://orient-vega.codio.io:9292/" # base url of the API
+  API_BASE_URL = "http://localhost:9292/" # base url of the API
 end

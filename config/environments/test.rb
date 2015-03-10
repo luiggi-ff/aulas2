@@ -38,6 +38,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.log_level = :debug
     
-  API_BASE_URL = "http://orient-vega.codio.io:9293/" # base url of the API
+  API_BASE_URL = "http://localhost:9293/" # base url of the API
   
 end
