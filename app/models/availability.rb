@@ -12,5 +12,9 @@ class Availability
   def owner
       @owner = ''
   end    
+  
+    def owner_email
+      @owner = ''
+  end    
     
 end

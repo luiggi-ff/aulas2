@@ -19,7 +19,7 @@
               <%=b.status||='free'%>
           </td>
           <td>
-              <%=b.owner == '' ? " ": User.find(b.owner).full_name ||=b.owner %>
+              <%=b.owner_email %>
           </td>
           <td>
             <%= render partial: 'index_actions', locals: {b: b, resource_id: @resource.id} %>

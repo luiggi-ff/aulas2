@@ -18,7 +18,11 @@ class Booking
 #  custom_get :own
     
   def owner
-    @owner ||= User.find(self.user.to_i)
+      @owner = User.find(self.user.to_i)
+  end
+  
+  def owner_email
+      @owner = User.find(self.user.to_i).email
   end
 
 end

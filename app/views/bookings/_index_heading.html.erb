@@ -15,9 +15,9 @@
         <h2>Ir a</h2>
         <%= form_tag( { :action => :index }, { :method => :get }) do %>
         <%= label_tag 'new_resource_id', 'Aula:' %>
-        <%= select_tag :resource_id , options_for_select(@resources, :selected => @resource_id) %><br>
+        <%= select_tag :resource_id , options_for_select(@resources, :selected => @resource_id), class: "form-control" %><br>
         <%= label_tag 'goto', 'Fecha:' %>
-        <%= date_select('goto', 'day', options = {selected: @date,  include_blank: false} )%>
+        <%= date_select('goto', 'day', options = {selected: @date,  include_blank: false  }, {:class => 'date-select'} )%>
         <%= submit_tag "Ir", class: "btn btn-primary" %>
         <%end%>
     </div>
